@@ -1,0 +1,9 @@
+bot:
+  name: notebookmanager_bot
+  token: 5048393640:AAGA0cYs7DKEm92a6v_QcTDUEFVkIX0p87Q
+
+  commands:
+  - /newnote
+  - /deletenote
+  - /allnotes
+  - /help
