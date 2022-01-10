@@ -1,4 +1,4 @@
-package com.example.notebookbot.model;
+package com.example.notebookbot.telegram;
 
 import lombok.NoArgsConstructor;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;

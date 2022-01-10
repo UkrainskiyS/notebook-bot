@@ -1,6 +1,6 @@
-package com.example.notebookbot.repository;
+package com.example.notebookbot.persist.note.repository;
 
-import com.example.notebookbot.model.Note;
+import com.example.notebookbot.persist.note.model.Note;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

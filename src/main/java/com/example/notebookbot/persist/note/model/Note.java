@@ -1,4 +1,4 @@
-package com.example.notebookbot.model;
+package com.example.notebookbot.persist.note.model;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

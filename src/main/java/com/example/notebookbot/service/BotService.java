@@ -1,9 +1,9 @@
 package com.example.notebookbot.service;
 
-import com.example.notebookbot.model.MessageBuilder;
-import com.example.notebookbot.model.Note;
-import com.example.notebookbot.repository.NoteRepository;
-import com.example.notebookbot.utils.BotUtils;
+import com.example.notebookbot.telegram.MessageBuilder;
+import com.example.notebookbot.persist.note.model.Note;
+import com.example.notebookbot.persist.note.repository.NoteRepository;
+import com.example.notebookbot.utilits.TextMaker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -26,7 +26,7 @@ public class BotService {
         MessageBuilder sendMessage = new MessageBuilder(message.getChatId());
 
         if (allByChatId.isPresent()) {
-            return sendMessage.setText(BotUtils.listNotesToString(allByChatId.get())).build();
+            return sendMessage.setText(TextMaker.listNotesToString(allByChatId.get())).build();
         } else {
             return sendMessage.setText("У вас нет заметок!").build();
         }
@@ -40,6 +40,6 @@ public class BotService {
                         .setChatId(chatId)
                         .build()
         );
-        return new MessageBuilder().fastBuild(chatId, BotUtils.messageAboutCreateNote(nameNeNote));
+        return new MessageBuilder().fastBuild(chatId, TextMaker.messageAboutCreateNote(nameNeNote));
     }
 }

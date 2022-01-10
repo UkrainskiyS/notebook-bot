@@ -1,7 +1,6 @@
 package com.example.notebookbot.telegram;
 
 import com.example.notebookbot.config.BotConfig;
-import com.example.notebookbot.model.MessageBuilder;
 import com.example.notebookbot.service.BotService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

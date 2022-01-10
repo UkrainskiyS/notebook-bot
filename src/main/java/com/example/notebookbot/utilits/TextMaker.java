@@ -1,12 +1,12 @@
-package com.example.notebookbot.utils;
+package com.example.notebookbot.utilits;
 
 
-import com.example.notebookbot.model.Note;
+import com.example.notebookbot.persist.note.model.Note;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class BotUtils {
+public class TextMaker {
 
     public static String messageAboutCreateNote(String name) {
         return String.format(
