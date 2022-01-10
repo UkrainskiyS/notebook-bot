@@ -62,6 +62,6 @@ public class BotService {
 
         AbstractHandler handler = factory.getHandler();
 
-        return handler.execute();
+        return handler == null ? null : handler.execute();
     }
 }

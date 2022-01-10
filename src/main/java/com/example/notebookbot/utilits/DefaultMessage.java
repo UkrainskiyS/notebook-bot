@@ -15,21 +15,15 @@ public class DefaultMessage {
 	}
 
 	public static List<SendMessage> setTextForNewNote(Long chatId, String name) {
-		return List.of(
-				new MessageBuilder().fastBuild(chatId, String.format("Хорошо, а теперь добавь содержание для _%s_!", name))
-		);
+		return List.of(new MessageBuilder().fastBuild(chatId, String.format("Хорошо, а теперь добавь содержание для _%s_!", name)));
 	}
 
 	public static List<SendMessage> noteNameExist(Long chatId, String name) {
-		return List.of(
-				new MessageBuilder().fastBuild(chatId, String.format("Хмм... Кажется заметка с именем _%s_ уже существует.", name))
-		);
+		return List.of(new MessageBuilder().fastBuild(chatId, String.format("Хмм... Кажется заметка с именем _%s_ уже существует.", name)));
 	}
 
 	public static List<SendMessage> newNoteCreated(Long chatId, String name) {
-		return List.of(
-				new MessageBuilder().fastBuild(chatId, String.format("Новая заметка _%s_ успешно создана!", name))
-		);
+		return List.of(new MessageBuilder().fastBuild(chatId, String.format("Новая заметка _%s_ успешно создана!", name)));
 	}
 
 	public static List<SendMessage> veryLongText(Long chatId) {
@@ -37,8 +31,7 @@ public class DefaultMessage {
 	}
 
 	public static List<SendMessage> noteListEmpty(Long chatId) {
-		return List.of(new MessageBuilder().fastBuild(chatId,
-				"Ваш список заметок пуст!\n\nСоздать новую заметку можно с помощью команды /newnote"));
+		return List.of(new MessageBuilder().fastBuild(chatId, "Ваш список заметок пуст!\n\nСоздать новую заметку можно с помощью команды /newnote"));
 	}
 
 	public static List<SendMessage> longNoteName(Long chatId) {
