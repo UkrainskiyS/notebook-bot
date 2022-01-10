@@ -2,6 +2,7 @@ package com.example.notebookbot.service;
 
 import com.example.notebookbot.persist.chat.ChatManager;
 import com.example.notebookbot.service.handlers.StartHandler;
+import com.example.notebookbot.utilits.DefaultMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -26,10 +27,14 @@ public class BotService {
 
             return null;
 
-        } else if (commands.contains(message.getText()) && message.getText().equals("/start")) {
+        } else if (commands.contains(message.getText())) {
 
-            StartHandler startHandler = new StartHandler(message, chatManager);
-            return startHandler.execute();
+            if (message.getText().equals("/start")) {
+                StartHandler startHandler = new StartHandler(message, chatManager);
+                return startHandler.execute();
+            } else {
+                return DefaultMessage.notBotInitMessage(message.getChatId());
+            }
 
         } else {
             return Collections.emptyList();
