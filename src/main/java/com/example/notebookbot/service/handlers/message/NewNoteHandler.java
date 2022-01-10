@@ -13,11 +13,11 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class NewMessageHandler extends AbstractHandler {
+public class NewNoteHandler extends AbstractHandler {
 	private final NoteRepository noteRepository;
 	private final ChatMode mode;
 
-	public NewMessageHandler(Message message, ChatManager chatManager, NoteRepository noteRepository, ChatMode mode) {
+	public NewNoteHandler(Message message, ChatManager chatManager, NoteRepository noteRepository, ChatMode mode) {
 		super(message, chatManager);
 		this.noteRepository = noteRepository;
 		this.mode = mode;
@@ -56,7 +56,7 @@ public class NewMessageHandler extends AbstractHandler {
 	// добавляет текст к созданной заметке и выставляет режим игнора
 	private List<SendMessage> setTextMode() {
 		chatManager.setMode(message.getChatId(), ChatMode.IGNORED);
-		Note note = noteRepository.findAllByChatId(message.getChatId()).stream()
+		Note note = noteRepository.getAllByChatId(message.getChatId()).stream()
 				.max(Comparator.comparing(Note::getId))
 				.orElseThrow();
 
