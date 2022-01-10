@@ -21,7 +21,7 @@ public class ChatManager {
 	}
 
 	public ChatMode getMode(Long chatId) {
-		return repository.getModeByChatId(chatId);
+		return repository.getChatByChatId(chatId).getMode();
 	}
 
 	public void saveChat(Long chatId) {
@@ -33,6 +33,6 @@ public class ChatManager {
 	}
 
 	public boolean isIgnored(Long chatId) {
-		return repository.getModeByChatId(chatId).equals(ChatMode.IGNORED);
+		return repository.getChatByChatId(chatId).getMode().equals(ChatMode.IGNORED);
 	}
 }

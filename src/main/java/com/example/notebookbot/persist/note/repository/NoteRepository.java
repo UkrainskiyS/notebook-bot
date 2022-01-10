@@ -9,7 +9,7 @@ import java.util.Optional;
 
 @Repository
 public interface NoteRepository extends JpaRepository<Note, Integer> {
-    Optional<List<Note>> findAllByChatId(Long chatId);
+    List<Note> findAllByChatId(Long chatId);
     Optional<Note> findByChatIdAndName(Long chatId, String name);
     boolean existsByChatIdAndName(Long chatId, String name);
 }

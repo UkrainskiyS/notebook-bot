@@ -22,6 +22,11 @@ public class Note {
     private String name;
     private String text;
 
+    public Note(Long chatId, String name) {
+        this.chatId = chatId;
+        this.name = name;
+    }
+
     public static Builder builder() {
         return new Note().new Builder();
     }

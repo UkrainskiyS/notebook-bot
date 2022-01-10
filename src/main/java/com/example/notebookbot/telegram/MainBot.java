@@ -3,7 +3,6 @@ package com.example.notebookbot.telegram;
 import com.example.notebookbot.config.BotConfig;
 import com.example.notebookbot.service.BotService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -33,14 +32,15 @@ public class MainBot extends TelegramLongPollingBot {
         } else {
             messages = service.callBackQueryHandler(update.getCallbackQuery());
         }
-        ClassLoader classLoader = getClass().getClassLoader();
 
         messages.forEach(this::send);
     }
 
     private void send(SendMessage message) {
         try {
-            execute(message);
+            if (message != null) {
+                execute(message);
+            }
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }
