@@ -20,7 +20,7 @@ public class DefaultMessage {
 		);
 	}
 
-	public static List<SendMessage> badNoteName(Long chatId, String name) {
+	public static List<SendMessage> noteNameExist(Long chatId, String name) {
 		return List.of(
 				new MessageBuilder().fastBuild(chatId, String.format("Хмм... Кажется заметка с именем _%s_ уже существует.", name))
 		);
@@ -34,5 +34,14 @@ public class DefaultMessage {
 
 	public static List<SendMessage> veryLongText(Long chatId) {
 		return List.of(new MessageBuilder().fastBuild(chatId, "Заметка слишком длинная! Попробуйте сократить!"));
+	}
+
+	public static List<SendMessage> noteListEmpty(Long chatId) {
+		return List.of(new MessageBuilder().fastBuild(chatId,
+				"Ваш список заметок пуст!\n\nСоздать новую заметку можно с помощью команды /newnote"));
+	}
+
+	public static List<SendMessage> longNoteName(Long chatId) {
+		return List.of(new MessageBuilder().fastBuild(chatId, "Название заметки должно быть не более 60 символов!"));
 	}
 }

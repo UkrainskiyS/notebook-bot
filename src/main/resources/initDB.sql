@@ -16,7 +16,7 @@ CREATE TABLE chats (
 
 -- my chat_id = 1004338253
 
--- INSERT INTO chats (chat_id, mode) VALUES (1004338253, 'IGNORED');
+INSERT INTO chats (chat_id, mode) VALUES (1004338253, 'IGNORED');
 
 INSERT INTO notes (chat_id, name, text) VALUES (1004338253, 'sites', 'id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,');
 INSERT INTO notes (chat_id, name, text) VALUES (1004338253, 'kafka', 'id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,');

@@ -1,4 +1,4 @@
-package com.example.notebookbot.service.handlers.message;
+package com.example.notebookbot.service.handlers.message.commands;
 
 import com.example.notebookbot.persist.chat.ChatManager;
 import com.example.notebookbot.persist.chat.ChatMode;
@@ -9,7 +9,6 @@ import com.example.notebookbot.utilits.DefaultMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
-import java.sql.SQLException;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -43,13 +42,17 @@ public class NewNoteHandler extends AbstractHandler {
 	// проверяет имя новой заметки и переводит чат в режим добавления текста к ней
 	private List<SendMessage> setNameMode() {
 		if (noteRepository.existsByChatIdAndName(message.getChatId(), message.getText())) {
+			// проверка повтора названия
 			chatManager.setMode(message.getChatId(), ChatMode.IGNORED);
-
-			return DefaultMessage.badNoteName(message.getChatId(), message.getText());
+			return DefaultMessage.noteNameExist(message.getChatId(), message.getText());
+		} else if (message.getText().length() > 60) {
+			// проверка длинны названия
+			chatManager.setMode(message.getChatId(), ChatMode.IGNORED);
+			return DefaultMessage.longNoteName(message.getChatId());
 		} else {
+			// добавляет имя в бд
 			chatManager.setMode(message.getChatId(), ChatMode.NEW_SET_TEXT);
 			noteRepository.save(new Note(message.getChatId(), message.getText()));
-
 			return DefaultMessage.setTextForNewNote(message.getChatId(), message.getText());
 		}
 	}

@@ -2,6 +2,7 @@ package com.example.notebookbot.telegram;
 
 import lombok.NoArgsConstructor;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 
 @NoArgsConstructor
 public class MessageBuilder {
@@ -22,6 +23,7 @@ public class MessageBuilder {
 
     private Long chatId;
     private String text;
+    private InlineKeyboardMarkup markup;
 
     public MessageBuilder(Long chatId) {
         this.chatId = chatId;
@@ -29,6 +31,11 @@ public class MessageBuilder {
 
     public MessageBuilder setChatId(Long chatId) {
         this.chatId = chatId;
+        return this;
+    }
+
+    public MessageBuilder setMarkup(InlineKeyboardMarkup markup) {
+        this.markup = markup;
         return this;
     }
 
@@ -40,6 +47,9 @@ public class MessageBuilder {
     public SendMessage build() {
         SendMessage message = new SendMessage(String.valueOf(chatId), text);
         message.enableMarkdown(true);
+        if (markup != null) {
+            message.setReplyMarkup(markup);
+        }
         return message;
     }
 }

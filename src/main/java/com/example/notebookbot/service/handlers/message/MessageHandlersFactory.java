@@ -1,25 +1,30 @@
-package com.example.notebookbot.service.handlers;
+package com.example.notebookbot.service.handlers.message;
 
 import com.example.notebookbot.config.BotConfig;
 import com.example.notebookbot.persist.chat.ChatManager;
 import com.example.notebookbot.persist.chat.ChatMode;
 import com.example.notebookbot.persist.note.repository.NoteRepository;
-import com.example.notebookbot.service.handlers.message.NewNoteHandler;
-import com.example.notebookbot.service.handlers.message.ShowAllHandler;
-import lombok.AllArgsConstructor;
+import com.example.notebookbot.service.handlers.AbstractHandler;
+import com.example.notebookbot.service.handlers.AbstractHandlerFactory;
+import com.example.notebookbot.service.handlers.message.commands.GetNoteHandler;
+import com.example.notebookbot.service.handlers.message.commands.NewNoteHandler;
+import com.example.notebookbot.service.handlers.message.commands.ShowAllHandler;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
-import java.util.Collections;
-import java.util.Set;
 
-@AllArgsConstructor
-public class MessageHandlersFactory {
-	private final ChatManager chatManager;
-	private final NoteRepository noteRepository;
-	private final Message message;
+public class MessageHandlersFactory extends AbstractHandlerFactory {
 	private final BotConfig config;
+	private final ChatMode mode;
 
-	public AbstractHandler getHandler(ChatMode mode) {
+	public MessageHandlersFactory(ChatManager chatManager, NoteRepository noteRepository, Message message,
+								  BotConfig config, ChatMode mode) {
+		super(chatManager, noteRepository, message, mode);
+		this.config = config;
+		this.mode = mode;
+	}
+
+	@Override
+	public AbstractHandler getHandler() {
 		if (mode.equals(ChatMode.IGNORED) && config.getCommands().contains(message.getText())) {
 			return getIgnoredHandler(mode);
 		} else {
@@ -34,8 +39,8 @@ public class MessageHandlersFactory {
 			return null;
 		} else if (message.getText().startsWith("/showall")) {
 			return new ShowAllHandler(message, chatManager, noteRepository);
-		} else if (message.getText().startsWith("/shownote")) {
-			return null;
+		} else if (message.getText().startsWith("/getnote")) {
+			return new GetNoteHandler(message, chatManager, noteRepository);
 		} else if (message.getText().startsWith("/getfile")) {
 			return null;
 		} else if (message.getText().startsWith("/help")) {

@@ -1,6 +1,7 @@
-package com.example.notebookbot.service.handlers;
+package com.example.notebookbot.service.handlers.message.commands;
 
 import com.example.notebookbot.persist.chat.ChatManager;
+import com.example.notebookbot.service.handlers.AbstractHandler;
 import com.example.notebookbot.telegram.MessageBuilder;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;

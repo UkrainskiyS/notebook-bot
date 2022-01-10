@@ -4,8 +4,9 @@ import com.example.notebookbot.config.BotConfig;
 import com.example.notebookbot.persist.chat.ChatManager;
 import com.example.notebookbot.persist.note.repository.NoteRepository;
 import com.example.notebookbot.service.handlers.AbstractHandler;
-import com.example.notebookbot.service.handlers.MessageHandlersFactory;
-import com.example.notebookbot.service.handlers.StartHandler;
+import com.example.notebookbot.service.handlers.callback.CallBackHandlerFactory;
+import com.example.notebookbot.service.handlers.message.MessageHandlersFactory;
+import com.example.notebookbot.service.handlers.message.commands.StartHandler;
 import com.example.notebookbot.utilits.DefaultMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,7 +16,6 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class BotService {
@@ -33,8 +33,9 @@ public class BotService {
     public List<SendMessage> messageHandler(Message message) {
         // условие, при котором бот в текущем чате инициализирован
         if (chatManager.chatExist(message.getChatId())) {
-            MessageHandlersFactory factory = new MessageHandlersFactory(chatManager, noteRepository, message, config);
-            AbstractHandler handler = factory.getHandler(chatManager.getMode(message.getChatId()));
+            MessageHandlersFactory factory = new MessageHandlersFactory(chatManager, noteRepository, message, config,
+                    chatManager.getMode(message.getChatId()));
+            AbstractHandler handler = factory.getHandler();
 
             return handler == null ? null : handler.execute();
 
@@ -54,7 +55,13 @@ public class BotService {
         }
     }
 
+    // обработка кнопок
     public List<SendMessage> callBackQueryHandler(CallbackQuery callbackQuery) {
-        return null;
+        CallBackHandlerFactory factory = new CallBackHandlerFactory(chatManager, noteRepository, callbackQuery.getMessage(),
+                chatManager.getMode(callbackQuery.getMessage().getChatId()), callbackQuery.getData());
+
+        AbstractHandler handler = factory.getHandler();
+
+        return handler.execute();
     }
 }
