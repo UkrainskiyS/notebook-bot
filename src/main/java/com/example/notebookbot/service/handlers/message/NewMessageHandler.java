@@ -26,29 +26,45 @@ public class NewMessageHandler extends AbstractHandler {
 
 	@Override
 	public List<SendMessage> execute() {
-		if (mode.equals(ChatMode.IGNORED)) {
-			chatManager.setMode(message.getChatId(), ChatMode.NEW_SET_NAME);
-			return DefaultMessage.setNameForNewNote(message.getChatId());
-		} else if (mode.equals(ChatMode.NEW_SET_NAME)) {
-			if (noteRepository.existsByChatIdAndName(message.getChatId(), message.getText())) {
-				chatManager.setMode(message.getChatId(), ChatMode.IGNORED);
-				return DefaultMessage.badNoteName(message.getChatId(), message.getText());
-			} else {
-				chatManager.setMode(message.getChatId(), ChatMode.NEW_SET_TEXT);
-				noteRepository.save(new Note(message.getChatId(), message.getText()));
-				return DefaultMessage.setTextForNewNote(message.getChatId(), message.getText());
-			}
-		} else if (mode.equals(ChatMode.NEW_SET_TEXT)) {
-			chatManager.setMode(message.getChatId(), ChatMode.IGNORED);
-			List<Note> notes = noteRepository.findAllByChatId(message.getChatId()).stream()
-					.sorted(Comparator.comparing(Note::getId))
-					.collect(Collectors.toList());
-			Note note = notes.get(notes.size() - 1);
-			note.setText(message.getText());
-			noteRepository.save(note);
-			return DefaultMessage.newNoteCreated(message.getChatId(), note.getName());
-		} else {
-			return Collections.emptyList();
+		switch (mode) {
+			case IGNORED: return ignoredMode();
+			case NEW_SET_NAME: return setNameMode();
+			case NEW_SET_TEXT: return setTextMode();
+			default: return Collections.emptyList();
 		}
+	}
+
+	// добавляет текст к созданной саметке и выставляет режим игнора
+	private List<SendMessage> setTextMode() {
+		chatManager.setMode(message.getChatId(), ChatMode.IGNORED);
+		List<Note> notes = noteRepository.findAllByChatId(message.getChatId()).stream()
+				.sorted(Comparator.comparing(Note::getId))
+				.collect(Collectors.toList());
+
+		Note note = notes.get(notes.size() - 1);
+		note.setText(message.getText());
+		noteRepository.save(note);
+
+		return DefaultMessage.newNoteCreated(message.getChatId(), note.getName());
+	}
+
+	// проверяет имя новой заметки и переводит чат в режим добавления текста к ней
+	private List<SendMessage> setNameMode() {
+		if (noteRepository.existsByChatIdAndName(message.getChatId(), message.getText())) {
+			chatManager.setMode(message.getChatId(), ChatMode.IGNORED);
+
+			return DefaultMessage.badNoteName(message.getChatId(), message.getText());
+		} else {
+			chatManager.setMode(message.getChatId(), ChatMode.NEW_SET_TEXT);
+			noteRepository.save(new Note(message.getChatId(), message.getText()));
+
+			return DefaultMessage.setTextForNewNote(message.getChatId(), message.getText());
+		}
+	}
+
+	// переводит чат в режим создания новой заметки
+	private List<SendMessage> ignoredMode() {
+		chatManager.setMode(message.getChatId(), ChatMode.NEW_SET_NAME);
+		return DefaultMessage.setNameForNewNote(message.getChatId());
 	}
 }
