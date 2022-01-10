@@ -12,7 +12,6 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class NewMessageHandler extends AbstractHandler {
 	private final NoteRepository noteRepository;
@@ -34,18 +33,10 @@ public class NewMessageHandler extends AbstractHandler {
 		}
 	}
 
-	// добавляет текст к созданной саметке и выставляет режим игнора
-	private List<SendMessage> setTextMode() {
-		chatManager.setMode(message.getChatId(), ChatMode.IGNORED);
-		List<Note> notes = noteRepository.findAllByChatId(message.getChatId()).stream()
-				.sorted(Comparator.comparing(Note::getId))
-				.collect(Collectors.toList());
-
-		Note note = notes.get(notes.size() - 1);
-		note.setText(message.getText());
-		noteRepository.save(note);
-
-		return DefaultMessage.newNoteCreated(message.getChatId(), note.getName());
+	// переводит чат в режим создания новой заметки
+	private List<SendMessage> ignoredMode() {
+		chatManager.setMode(message.getChatId(), ChatMode.NEW_SET_NAME);
+		return DefaultMessage.setNameForNewNote(message.getChatId());
 	}
 
 	// проверяет имя новой заметки и переводит чат в режим добавления текста к ней
@@ -62,9 +53,16 @@ public class NewMessageHandler extends AbstractHandler {
 		}
 	}
 
-	// переводит чат в режим создания новой заметки
-	private List<SendMessage> ignoredMode() {
-		chatManager.setMode(message.getChatId(), ChatMode.NEW_SET_NAME);
-		return DefaultMessage.setNameForNewNote(message.getChatId());
+	// добавляет текст к созданной заметке и выставляет режим игнора
+	private List<SendMessage> setTextMode() {
+		chatManager.setMode(message.getChatId(), ChatMode.IGNORED);
+		Note note = noteRepository.findAllByChatId(message.getChatId()).stream()
+				.max(Comparator.comparing(Note::getId))
+				.orElseThrow();
+
+		note.setText(message.getText());
+		noteRepository.save(note);
+
+		return DefaultMessage.newNoteCreated(message.getChatId(), note.getName());
 	}
 }
