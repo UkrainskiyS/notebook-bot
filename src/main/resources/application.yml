@@ -5,5 +5,7 @@ bot:
   commands:
   - /newnote
   - /deletenote
-  - /allnotes
+  - /showall
+  - /shownote
+  - /start
   - /help

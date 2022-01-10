@@ -15,12 +15,17 @@ import javax.persistence.*;
 public class Chat {
 	@Id
 	@Column(name = "id", nullable = false)
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 
 	@Column(name = "chat_id")
 	private Long chatId;
 
+	@Enumerated(value = EnumType.STRING)
 	private ChatMode mode;
 
+	public Chat(Long chatId, ChatMode mode) {
+		this.chatId = chatId;
+		this.mode = mode;
+	}
 }
