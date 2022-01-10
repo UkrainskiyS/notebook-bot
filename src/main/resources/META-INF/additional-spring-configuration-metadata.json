@@ -12,7 +12,7 @@
     },
     {
       "name": "bot.commands",
-      "type": "java.util.Set",
+      "type": "java.util.HashMap",
       "description": "Description for bot.commands."
     }
   ] }

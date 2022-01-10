@@ -1,5 +1,6 @@
 package com.example.notebookbot.service;
 
+import com.example.notebookbot.config.BotConfig;
 import com.example.notebookbot.persist.chat.ChatManager;
 import com.example.notebookbot.persist.note.repository.NoteRepository;
 import com.example.notebookbot.service.handlers.AbstractHandler;
@@ -20,24 +21,27 @@ import java.util.Set;
 public class BotService {
     private final ChatManager chatManager;
     private final NoteRepository noteRepository;
+    private final BotConfig config;
 
     @Autowired
-    public BotService(ChatManager chatManager, NoteRepository noteRepository) {
+    public BotService(ChatManager chatManager, NoteRepository noteRepository, BotConfig config) {
         this.chatManager = chatManager;
         this.noteRepository = noteRepository;
+        this.config = config;
     }
 
-    public List<SendMessage> messageHandler(Message message, Set<String> commands) {
+    public List<SendMessage> messageHandler(Message message) {
         // условие, при котором бот в текущем чате инициализирован
         if (chatManager.chatExist(message.getChatId())) {
-            MessageHandlersFactory factory = new MessageHandlersFactory(chatManager, noteRepository, message, commands);
+            MessageHandlersFactory factory = new MessageHandlersFactory(chatManager, noteRepository, message, config);
             AbstractHandler handler = factory.getHandler(chatManager.getMode(message.getChatId()));
-            return handler.execute();
+
+            return handler == null ? null : handler.execute();
 
             // бот не инициализирован, но пользователь отправляет команду
-        } else if (commands.contains(message.getText())) {
+        } else if (config.getCommands().contains(message.getText())) {
             // если команда /start - инициализация бота
-            if (message.getText().equals("/start")) {
+            if (message.getText().equals("/start") || message.getText().equals("/start@" + config.getName())) {
                 StartHandler startHandler = new StartHandler(message, chatManager);
                 return startHandler.execute();
             } else {

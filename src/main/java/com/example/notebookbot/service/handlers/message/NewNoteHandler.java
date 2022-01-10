@@ -9,6 +9,7 @@ import com.example.notebookbot.utilits.DefaultMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
+import java.sql.SQLException;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -61,7 +62,12 @@ public class NewNoteHandler extends AbstractHandler {
 				.orElseThrow();
 
 		note.setText(message.getText());
-		noteRepository.save(note);
+
+		try {
+			noteRepository.save(note);
+		} catch (Exception e) {
+			return DefaultMessage.veryLongText(message.getChatId());
+		}
 
 		return DefaultMessage.newNoteCreated(message.getChatId(), note.getName());
 	}

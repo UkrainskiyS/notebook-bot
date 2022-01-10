@@ -10,6 +10,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class MainBot extends TelegramLongPollingBot {
@@ -26,14 +27,16 @@ public class MainBot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
-        List<SendMessage> messages;
+        Optional<List<SendMessage>> messages;
         if (update.hasMessage()) {
-            messages = service.messageHandler(update.getMessage(), config.getCommands());
+            // обрабатывает ввод пользователей и команды
+            messages = Optional.ofNullable(service.messageHandler(update.getMessage()));
         } else {
-            messages = service.callBackQueryHandler(update.getCallbackQuery());
+            // обрабатывает кнопки
+            messages = Optional.ofNullable(service.callBackQueryHandler(update.getCallbackQuery()));
         }
 
-        messages.forEach(this::send);
+        messages.ifPresent((list) -> list.forEach(this::send));
     }
 
     private void send(SendMessage message) {

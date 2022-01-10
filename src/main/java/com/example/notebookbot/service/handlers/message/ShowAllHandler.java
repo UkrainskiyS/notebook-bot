@@ -23,19 +23,17 @@ public class ShowAllHandler extends AbstractHandler {
 	@Override
 	public List<SendMessage> execute() {
 		Optional<List<Note>> optionalNotes = noteRepository.findAllByChatId(message.getChatId());
+		MessageBuilder messageBuilder = new MessageBuilder(message.getChatId());
 
 		if (optionalNotes.isEmpty() || optionalNotes.get().size() == 0) {
-			return List.of(
-					new MessageBuilder().fastBuild(message.getChatId(),
-							"Ваш список заметок пуст!\n\nСоздать новую заметку можно с помощью команды /newnote")
-			);
+			return List.of(messageBuilder
+							.setText("Ваш список заметок пуст!\n\nСоздать новую заметку можно с помощью команды /newnote")
+							.build());
 		} else {
-			return List.of(
-					new MessageBuilder().fastBuild(message.getChatId(),
-							optionalNotes.get().stream()
-									.map(Note::getName)
-									.collect(Collectors.joining("`\n- `", "*Все заметки:*\n- `", "`")))
-			);
+			return List.of(messageBuilder.setText(optionalNotes.get().stream()
+							.map(Note::getName)
+							.collect(Collectors.joining("```\n- ```", "*Все заметки:*\n- ```", "```")))
+							.build());
 		}
 	}
 }

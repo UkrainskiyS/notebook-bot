@@ -5,7 +5,9 @@ import lombok.NoArgsConstructor;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
+import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Data
 @NoArgsConstructor
@@ -15,4 +17,14 @@ public class BotConfig {
     private String name;
     private String token;
     private Set<String> commands;
+
+    public Set<String> getCommands() {
+        Set<String> set = new HashSet<>(commands);
+        set.addAll(
+                commands.stream()
+                        .map(s -> s + '@' + name)
+                        .collect(Collectors.toSet())
+        );
+        return set;
+    }
 }

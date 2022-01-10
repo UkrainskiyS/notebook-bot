@@ -7,15 +7,11 @@ import java.util.List;
 
 public class DefaultMessage {
 	public static List<SendMessage> notBotInitMessage(Long chatId) {
-		return List.of(
-				new MessageBuilder().fastBuild(chatId, "Используй /start чтобы начать использовать бота!")
-		);
+		return List.of(new MessageBuilder().fastBuild(chatId, "Используй /start чтобы начать использовать бота!"));
 	}
 
 	public static List<SendMessage> setNameForNewNote(Long chatId) {
-		return List.of(
-				new MessageBuilder().fastBuild(chatId, "Как назовем новую заметку?")
-		);
+		return List.of(new MessageBuilder().fastBuild(chatId, "Как назовем новую заметку?"));
 	}
 
 	public static List<SendMessage> setTextForNewNote(Long chatId, String name) {
@@ -34,5 +30,9 @@ public class DefaultMessage {
 		return List.of(
 				new MessageBuilder().fastBuild(chatId, String.format("Новая заметка _%s_ успешно создана!", name))
 		);
+	}
+
+	public static List<SendMessage> veryLongText(Long chatId) {
+		return List.of(new MessageBuilder().fastBuild(chatId, "Заметка слишком длинная! Попробуйте сократить!"));
 	}
 }
