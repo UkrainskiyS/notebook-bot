@@ -3,7 +3,7 @@ package com.example.notebookbot.service.handlers.callback;
 import com.example.notebookbot.persist.chat.ChatManager;
 import com.example.notebookbot.persist.note.repository.NoteRepository;
 import com.example.notebookbot.service.handlers.AbstractHandler;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
 import java.util.List;
@@ -19,5 +19,5 @@ public abstract class AbstractCallBack extends AbstractHandler {
 	}
 
 	@Override
-	public abstract List<SendMessage> execute();
+	public abstract List<BotApiMethod<Message>> execute();
 }

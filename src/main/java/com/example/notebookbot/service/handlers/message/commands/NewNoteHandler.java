@@ -7,6 +7,7 @@ import com.example.notebookbot.persist.note.repository.NoteRepository;
 import com.example.notebookbot.service.handlers.message.AbstractMessageHandler;
 import com.example.notebookbot.utilits.DefaultMessage;
 import com.example.notebookbot.utilits.TextCorrector;
+import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
@@ -23,7 +24,7 @@ public class NewNoteHandler extends AbstractMessageHandler {
 	}
 
 	@Override
-	public List<SendMessage> execute() {
+	public List<BotApiMethod<Message>> execute() {
 		switch (mode) {
 			case IGNORED: return ignoredMode();
 			case NEW_SET_NAME: return setNameMode();

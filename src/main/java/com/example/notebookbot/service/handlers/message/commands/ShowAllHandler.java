@@ -5,6 +5,7 @@ import com.example.notebookbot.persist.note.model.Note;
 import com.example.notebookbot.persist.note.repository.NoteRepository;
 import com.example.notebookbot.service.handlers.message.AbstractMessageHandler;
 import com.example.notebookbot.utilits.DefaultMessage;
+import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
@@ -19,7 +20,7 @@ public class ShowAllHandler extends AbstractMessageHandler {
 	}
 
 	@Override
-	public List<SendMessage> execute() {
+	public List<BotApiMethod<Message>> execute() {
 		Optional<List<Note>> optionalNotes = noteRepository.findAllByChatId(message.getChatId());
 
 		if (optionalNotes.isEmpty() || optionalNotes.get().size() == 0) {

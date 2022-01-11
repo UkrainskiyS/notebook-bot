@@ -1,6 +1,8 @@
 package com.example.notebookbot.utilits;
 
+import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.Message;
 
 import java.util.List;
 
@@ -24,7 +26,7 @@ public class DefaultMessage {
 		return List.of(message);
 	}
 
-	public static List<SendMessage> noteDeleted(Long chatId, String name) {
+	public static List<BotApiMethod<Message>> noteDeleted(Long chatId, String name) {
 		SendMessage message = SendMessage.builder().text("Заметка _" + name + "_ успешно удалена!").chatId(String.valueOf(chatId)).build();
 		message.enableMarkdown(true);
 		return List.of(message);

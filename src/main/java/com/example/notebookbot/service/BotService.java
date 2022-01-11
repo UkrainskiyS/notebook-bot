@@ -10,6 +10,7 @@ import com.example.notebookbot.service.handlers.message.commands.StartHandler;
 import com.example.notebookbot.utilits.DefaultMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -56,7 +57,7 @@ public class BotService {
     }
 
     // обработка кнопок
-    public List<SendMessage> callBackQueryHandler(CallbackQuery callbackQuery) {
+    public List<BotApiMethod<Message>> callBackQueryHandler(CallbackQuery callbackQuery) {
         CallBackHandlerFactory factory = new CallBackHandlerFactory(chatManager, noteRepository, callbackQuery.getMessage(),
                 chatManager.getMode(callbackQuery.getMessage().getChatId()), callbackQuery.getData());
 

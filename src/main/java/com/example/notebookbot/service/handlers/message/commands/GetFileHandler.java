@@ -7,6 +7,7 @@ import com.example.notebookbot.persist.note.repository.NoteRepository;
 import com.example.notebookbot.service.handlers.message.AbstractMessageHandler;
 import com.example.notebookbot.utilits.DefaultMessage;
 import com.example.notebookbot.utilits.TmeButtons;
+import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
@@ -21,7 +22,7 @@ public class GetFileHandler extends AbstractMessageHandler {
 	}
 
 	@Override
-	public List<SendMessage> execute() {
+	public List<BotApiMethod<Message>> execute() {
 		Optional<List<Note>> optionalNotes = noteRepository.findAllByChatId(message.getChatId());
 		// создание ответа для пустого списка заметок
 		List<SendMessage> sendMessage = DefaultMessage.noteListEmpty(message.getChatId());
