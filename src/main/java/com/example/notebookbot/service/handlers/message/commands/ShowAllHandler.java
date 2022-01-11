@@ -5,6 +5,7 @@ import com.example.notebookbot.persist.note.model.Note;
 import com.example.notebookbot.persist.note.repository.NoteRepository;
 import com.example.notebookbot.service.handlers.message.AbstractMessageHandler;
 import com.example.notebookbot.utilits.DefaultMessage;
+import org.telegram.telegrambots.meta.api.methods.ParseMode;
 import org.telegram.telegrambots.meta.api.methods.PartialBotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -27,14 +28,12 @@ public class ShowAllHandler extends AbstractMessageHandler {
 			return DefaultMessage.noteListEmpty(message.getChatId());
 
 		} else {
-			SendMessage sendMessage = SendMessage.builder()
+			return List.of(SendMessage.builder()
 					.text(optionalNotes.get().stream()
 									.map(Note::getName)
-									.collect(Collectors.joining("```\n- ```", "*Все заметки:*\n- ```", "```")))
-					.chatId(String.valueOf(message.getChatId())).build();
-
-			sendMessage.enableMarkdown(true);
-			return List.of(sendMessage);
+									.collect(Collectors.joining("\n- ", "*Все заметки:*\n- ", "")))
+					.chatId(String.valueOf(message.getChatId()))
+					.parseMode(ParseMode.MARKDOWN).build());
 		}
 	}
 }

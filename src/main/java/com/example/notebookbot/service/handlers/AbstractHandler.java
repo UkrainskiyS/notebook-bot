@@ -9,8 +9,12 @@ import java.util.List;
 
 @AllArgsConstructor
 public abstract class AbstractHandler {
-	protected final Message message;
-	protected final ChatManager chatManager;
+	protected Message message;
+	protected ChatManager chatManager;
+
+	public AbstractHandler(Message message) {
+		this.message = message;
+	}
 
 	public abstract List<PartialBotApiMethod<Message>> execute();
 }

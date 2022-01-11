@@ -42,7 +42,7 @@ public class MessageHandlersFactory extends AbstractHandlerFactory {
 		} else if (message.getText().startsWith("/getfile")) {
 			return new GetFileHandler(message, chatManager, noteRepository);
 		} else if (message.getText().startsWith("/help")) {
-			return null;
+			return new HelpHandler(message);
 		} else {
 			return null;
 		}
