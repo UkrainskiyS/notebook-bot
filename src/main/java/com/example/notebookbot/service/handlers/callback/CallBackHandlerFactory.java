@@ -6,6 +6,7 @@ import com.example.notebookbot.persist.note.repository.NoteRepository;
 import com.example.notebookbot.service.handlers.AbstractHandler;
 import com.example.notebookbot.service.handlers.AbstractHandlerFactory;
 import com.example.notebookbot.service.handlers.callback.commands.DeleteCallBackHandler;
+import com.example.notebookbot.service.handlers.callback.commands.EditNoteCallBackHandler;
 import com.example.notebookbot.service.handlers.callback.commands.GetFileCallBackHandler;
 import com.example.notebookbot.service.handlers.callback.commands.GetNoteCallBackHandler;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -21,9 +22,13 @@ public class CallBackHandlerFactory extends AbstractHandlerFactory {
     @Override
     public AbstractHandler getHandler() {
         switch (mode) {
-            case GET_NOTE: return new GetNoteCallBackHandler(message, chatManager, noteRepository, data);
+            case GET_NOTE:
+            case IGNORED:
+                return new GetNoteCallBackHandler(message, chatManager, noteRepository, data);
+
             case GET_FILE: return new GetFileCallBackHandler(message, chatManager, noteRepository, data);
             case DEL_NOTE: return new DeleteCallBackHandler(message, chatManager, noteRepository, data);
+            case EDIT_MODE: return new EditNoteCallBackHandler(message, chatManager, noteRepository, data);
             default: return null;
         }
     }

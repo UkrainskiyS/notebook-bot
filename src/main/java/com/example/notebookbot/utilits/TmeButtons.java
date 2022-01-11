@@ -1,5 +1,6 @@
 package com.example.notebookbot.utilits;
 
+import com.example.notebookbot.persist.note.UpdateMod;
 import com.example.notebookbot.persist.note.model.Note;
 import one.util.streamex.StreamEx;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
@@ -9,7 +10,14 @@ import java.util.List;
 
 public class TmeButtons {
 
-    public List<List<InlineKeyboardButton>> convertToListButtons(List<Note> noteList) {
+    public static List<List<InlineKeyboardButton>> getNoteUpdateModButtons() {
+        return List.of(List.of(
+                InlineKeyboardButton.builder().text("Дописать в конец").callbackData(UpdateMod.ADD.name()).build(),
+                InlineKeyboardButton.builder().text("Перезаписать").callbackData(UpdateMod.OVERWRITE.name()).build()
+                ));
+    }
+
+    public static List<List<InlineKeyboardButton>> convertToListButtons(List<Note> noteList) {
         int size = noteList.size();
 
         if (size == 1) {
@@ -35,7 +43,7 @@ public class TmeButtons {
         }
     }
 
-    private List<List<InlineKeyboardButton>> correct(List<List<InlineKeyboardButton>> list) {
+    private static List<List<InlineKeyboardButton>> correct(List<List<InlineKeyboardButton>> list) {
         var result = new ArrayList<List<InlineKeyboardButton>>();
 
         for (int i = 0; i < list.size(); i++) {

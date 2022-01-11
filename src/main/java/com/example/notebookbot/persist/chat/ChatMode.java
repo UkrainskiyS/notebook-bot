@@ -16,6 +16,6 @@ public enum ChatMode {
 	// для удаления заметки
 	DEL_NOTE,
 
-
-
+	// для изменения заметки
+	EDIT_MODE
 }

@@ -51,4 +51,8 @@ public class DefaultMessage {
 	public static List<PartialBotApiMethod<Message>> setNameForNewNote(Long chatId) {
 		return List.of(SendMessage.builder().chatId(String.valueOf(chatId)).text("Как назовем новую заметку?").build());
 	}
+
+	public static List<PartialBotApiMethod<Message>> noteWasDeleted(Long chatId) {
+		return List.of(SendMessage.builder().text("Эта заметка удалена!").chatId(String.valueOf(chatId)).build());
+	}
 }

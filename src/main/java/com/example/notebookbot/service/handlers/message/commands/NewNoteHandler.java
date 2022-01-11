@@ -2,6 +2,7 @@ package com.example.notebookbot.service.handlers.message.commands;
 
 import com.example.notebookbot.persist.chat.ChatManager;
 import com.example.notebookbot.persist.chat.ChatMode;
+import com.example.notebookbot.persist.note.UpdateMod;
 import com.example.notebookbot.persist.note.model.Note;
 import com.example.notebookbot.persist.note.repository.NoteRepository;
 import com.example.notebookbot.service.handlers.message.AbstractMessageHandler;
@@ -10,6 +11,7 @@ import com.example.notebookbot.utilits.TextCorrector;
 import org.telegram.telegrambots.meta.api.methods.PartialBotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -51,7 +53,7 @@ public class NewNoteHandler extends AbstractMessageHandler {
 		} else {
 			// добавляет имя в бд
 			chatManager.setMode(message.getChatId(), ChatMode.NEW_SET_TEXT);
-			noteRepository.save(new Note(message.getChatId(), message.getText()));
+			noteRepository.save(new Note(message.getChatId(), message.getText(), LocalDateTime.now(), UpdateMod.NOT));
 			return DefaultMessage.setTextForNewNote(message.getChatId(), message.getText());
 		}
 	}

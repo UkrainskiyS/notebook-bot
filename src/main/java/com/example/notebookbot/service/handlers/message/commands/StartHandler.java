@@ -15,9 +15,16 @@ public class StartHandler extends AbstractHandler {
 	}
 
 	public List<PartialBotApiMethod<Message>> execute() {
+		if (chatManager.chatExist(message.getChatId())) {
+			return List.of(SendMessage.builder().text("Я ужу в чате!").chatId(String.valueOf(message.getChatId())).build());
+		}
+
 		chatManager.saveChat(message.getChatId());
+		String helloText = message.getChat().getFirstName() == null ? "Привет, чат!"
+				: "Привет, " + message.getChat().getFirstName() + "!";
+
 		return List.of(
-				SendMessage.builder().text("Приветствую, " + message.getChat().getFirstName() + "!").chatId(String.valueOf(message.getChatId())).build(),
+				SendMessage.builder().text(helloText).chatId(String.valueOf(message.getChatId())).build(),
 				SendMessage.builder().text("Используй /help чтобы посмотреть инструкцию.").chatId(String.valueOf(message.getChatId())).build()
 		);
 	}

@@ -24,11 +24,10 @@ public class DeleteHandler extends AbstractMessageHandler {
 	@Override
 	public List<PartialBotApiMethod<Message>> execute() {
 		Optional<List<Note>> optionalNotes = noteRepository.findAllByChatId(message.getChatId());
-		// создание ответа для пустого списка заметок
 
 		if (optionalNotes.isPresent() && !optionalNotes.get().isEmpty()) {
 			// если заметки есть, конвертируем их в кнопки и отправляем
-			InlineKeyboardMarkup markup = new InlineKeyboardMarkup(new TmeButtons().convertToListButtons(optionalNotes.get()));
+			InlineKeyboardMarkup markup = new InlineKeyboardMarkup(TmeButtons.convertToListButtons(optionalNotes.get()));
 			chatManager.setMode(message.getChatId(), ChatMode.DEL_NOTE);
 			return List.of(SendMessage.builder().replyMarkup(markup).text("Какую заметку удалить?").chatId(String.valueOf(message.getChatId())).build());
 		}

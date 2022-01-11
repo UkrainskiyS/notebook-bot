@@ -10,3 +10,4 @@ bot:
   - /start
   - /help
   - /getfile
+  - /editnote

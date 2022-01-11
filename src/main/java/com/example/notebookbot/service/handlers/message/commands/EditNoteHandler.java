@@ -15,9 +15,9 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMa
 import java.util.List;
 import java.util.Optional;
 
-public class GetNoteHandler extends AbstractMessageHandler {
+public class EditNoteHandler extends AbstractMessageHandler {
 
-    public GetNoteHandler(Message message, ChatManager chatManager, NoteRepository noteRepository) {
+    public EditNoteHandler(Message message, ChatManager chatManager, NoteRepository noteRepository) {
         super(message, chatManager, noteRepository);
     }
 
@@ -28,8 +28,8 @@ public class GetNoteHandler extends AbstractMessageHandler {
         if (optionalNotes.isPresent() && !optionalNotes.get().isEmpty()) {
             // если заметки есть, конвертируем их в кнопки и отправляем
             InlineKeyboardMarkup markup = new InlineKeyboardMarkup(TmeButtons.convertToListButtons(optionalNotes.get()));
-            chatManager.setMode(message.getChatId(), ChatMode.GET_NOTE);
-            return List.of(SendMessage.builder().chatId(String.valueOf(message.getChatId())).replyMarkup(markup).text("Какую заметку показать?").build());
+            chatManager.setMode(message.getChatId(), ChatMode.GET_FILE);
+            return List.of(SendMessage.builder().replyMarkup(markup).text("Какую заметку обновить?").chatId(String.valueOf(message.getChatId())).build());
         }
 
         return DefaultMessage.noteListEmpty(message.getChatId());

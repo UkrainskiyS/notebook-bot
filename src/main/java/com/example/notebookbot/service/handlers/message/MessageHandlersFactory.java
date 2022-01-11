@@ -43,7 +43,11 @@ public class MessageHandlersFactory extends AbstractHandlerFactory {
 			return new GetFileHandler(message, chatManager, noteRepository);
 		} else if (message.getText().startsWith("/help")) {
 			return new HelpHandler(message);
-		} else {
+		} else if (message.getText().startsWith("/start")) {
+			return new StartHandler(message, chatManager);
+		} else if (message.getText().startsWith("/editnote")) {
+			return new EditNoteHandler(message, chatManager, noteRepository);
+		}else {
 			return null;
 		}
 	}
