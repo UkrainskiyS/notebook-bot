@@ -11,7 +11,6 @@ import com.example.notebookbot.utilits.DefaultMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
@@ -31,7 +30,7 @@ public class BotService {
         this.config = config;
     }
 
-    public List<SendMessage> messageHandler(Message message) {
+    public List<BotApiMethod<Message>> messageHandler(Message message) {
         // условие, при котором бот в текущем чате инициализирован
         if (chatManager.chatExist(message.getChatId())) {
             MessageHandlersFactory factory = new MessageHandlersFactory(chatManager, noteRepository, message, config,

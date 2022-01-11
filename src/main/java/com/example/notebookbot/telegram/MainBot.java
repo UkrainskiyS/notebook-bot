@@ -5,8 +5,8 @@ import com.example.notebookbot.service.BotService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
-import org.telegram.telegrambots.meta.api.methods.send.SendDocument;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
+import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
@@ -28,7 +28,7 @@ public class MainBot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
-        Optional<List<SendMessage>> messages;
+        Optional<List<BotApiMethod<Message>>> messages;
 
         if (update.hasMessage()) {
             // обрабатывает ввод пользователей и команды
@@ -38,14 +38,11 @@ public class MainBot extends TelegramLongPollingBot {
             messages = Optional.ofNullable(service.callBackQueryHandler(update.getCallbackQuery()));
         }
         messages.ifPresent((list) -> list.forEach(this::send));
-        SendDocument.builder().build();
     }
 
-    private void send(SendMessage message) {
+    private void send(BotApiMethod<Message> messageBotApiMethod) {
         try {
-            if (message != null) {
-                execute(message);
-            }
+            execute(messageBotApiMethod);
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }

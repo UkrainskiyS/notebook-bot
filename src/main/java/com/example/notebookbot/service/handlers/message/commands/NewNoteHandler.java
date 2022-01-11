@@ -8,7 +8,6 @@ import com.example.notebookbot.service.handlers.message.AbstractMessageHandler;
 import com.example.notebookbot.utilits.DefaultMessage;
 import com.example.notebookbot.utilits.TextCorrector;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
 import java.util.Collections;
@@ -34,13 +33,13 @@ public class NewNoteHandler extends AbstractMessageHandler {
 	}
 
 	// переводит чат в режим создания новой заметки
-	private List<SendMessage> ignoredMode() {
+	private List<BotApiMethod<Message>> ignoredMode() {
 		chatManager.setMode(message.getChatId(), ChatMode.NEW_SET_NAME);
 		return DefaultMessage.setNameForNewNote(message.getChatId());
 	}
 
 	// проверяет имя новой заметки и переводит чат в режим добавления текста к ней
-	private List<SendMessage> setNameMode() {
+	private List<BotApiMethod<Message>> setNameMode() {
 		if (noteRepository.existsByChatIdAndName(message.getChatId(), message.getText())) {
 			// проверка повтора названия
 			chatManager.setMode(message.getChatId(), ChatMode.IGNORED);
@@ -58,7 +57,7 @@ public class NewNoteHandler extends AbstractMessageHandler {
 	}
 
 	// добавляет текст к созданной заметке и выставляет режим игнора
-	private List<SendMessage> setTextMode() {
+	private List<BotApiMethod<Message>> setTextMode() {
 		chatManager.setMode(message.getChatId(), ChatMode.IGNORED);
 		Note note = noteRepository.getAllByChatId(message.getChatId()).stream()
 				.max(Comparator.comparing(Note::getId))
