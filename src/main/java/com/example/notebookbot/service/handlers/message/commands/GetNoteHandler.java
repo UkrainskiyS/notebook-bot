@@ -4,7 +4,7 @@ import com.example.notebookbot.persist.chat.ChatManager;
 import com.example.notebookbot.persist.chat.ChatMode;
 import com.example.notebookbot.persist.note.model.Note;
 import com.example.notebookbot.persist.note.repository.NoteRepository;
-import com.example.notebookbot.service.handlers.AbstractHandler;
+import com.example.notebookbot.service.handlers.message.AbstractMessageHandler;
 import com.example.notebookbot.utilits.DefaultMessage;
 import com.example.notebookbot.utilits.TmeButtons;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -14,12 +14,10 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMa
 import java.util.List;
 import java.util.Optional;
 
-public class GetNoteHandler extends AbstractHandler {
-    private final NoteRepository noteRepository;
+public class GetNoteHandler extends AbstractMessageHandler {
 
     public GetNoteHandler(Message message, ChatManager chatManager, NoteRepository noteRepository) {
-        super(message, chatManager);
-        this.noteRepository = noteRepository;
+        super(message, chatManager, noteRepository);
     }
 
     @Override

@@ -4,7 +4,7 @@ import com.example.notebookbot.persist.chat.ChatManager;
 import com.example.notebookbot.persist.chat.ChatMode;
 import com.example.notebookbot.persist.note.model.Note;
 import com.example.notebookbot.persist.note.repository.NoteRepository;
-import com.example.notebookbot.service.handlers.AbstractHandler;
+import com.example.notebookbot.service.handlers.message.AbstractMessageHandler;
 import com.example.notebookbot.utilits.DefaultMessage;
 import com.example.notebookbot.utilits.TextCorrector;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -14,13 +14,11 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class NewNoteHandler extends AbstractHandler {
-	private final NoteRepository noteRepository;
+public class NewNoteHandler extends AbstractMessageHandler {
 	private final ChatMode mode;
 
 	public NewNoteHandler(Message message, ChatManager chatManager, NoteRepository noteRepository, ChatMode mode) {
-		super(message, chatManager);
-		this.noteRepository = noteRepository;
+		super(message, chatManager, noteRepository);
 		this.mode = mode;
 	}
 

@@ -6,9 +6,7 @@ import com.example.notebookbot.persist.chat.ChatMode;
 import com.example.notebookbot.persist.note.repository.NoteRepository;
 import com.example.notebookbot.service.handlers.AbstractHandler;
 import com.example.notebookbot.service.handlers.AbstractHandlerFactory;
-import com.example.notebookbot.service.handlers.message.commands.GetNoteHandler;
-import com.example.notebookbot.service.handlers.message.commands.NewNoteHandler;
-import com.example.notebookbot.service.handlers.message.commands.ShowAllHandler;
+import com.example.notebookbot.service.handlers.message.commands.*;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
 
@@ -36,13 +34,13 @@ public class MessageHandlersFactory extends AbstractHandlerFactory {
 		if (message.getText().startsWith("/newnote")) {
 			return new NewNoteHandler(message, chatManager, noteRepository, mode);
 		} else if (message.getText().startsWith("/deletenote")) {
-			return null;
+			return new DeleteHandler(message, chatManager, noteRepository);
 		} else if (message.getText().startsWith("/showall")) {
 			return new ShowAllHandler(message, chatManager, noteRepository);
 		} else if (message.getText().startsWith("/getnote")) {
 			return new GetNoteHandler(message, chatManager, noteRepository);
 		} else if (message.getText().startsWith("/getfile")) {
-			return null;
+			return new GetFileHandler(message, chatManager, noteRepository);
 		} else if (message.getText().startsWith("/help")) {
 			return null;
 		} else {
