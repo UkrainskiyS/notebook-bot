@@ -12,6 +12,6 @@ public interface NoteRepository extends JpaRepository<Note, Integer> {
     List<Note> getAllByChatId(Long chatId);
     Optional<List<Note>> findAllByChatId(Long chatId);
 
-    Note getByChatIdAndName(Long chatId, String name);
+    Note findById(int id);
     boolean existsByChatIdAndName(Long chatId, String name);
 }

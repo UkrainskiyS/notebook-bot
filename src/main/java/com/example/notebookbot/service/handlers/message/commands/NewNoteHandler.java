@@ -6,6 +6,7 @@ import com.example.notebookbot.persist.note.model.Note;
 import com.example.notebookbot.persist.note.repository.NoteRepository;
 import com.example.notebookbot.service.handlers.AbstractHandler;
 import com.example.notebookbot.utilits.DefaultMessage;
+import com.example.notebookbot.utilits.TextCorrector;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
@@ -45,7 +46,7 @@ public class NewNoteHandler extends AbstractHandler {
 			// проверка повтора названия
 			chatManager.setMode(message.getChatId(), ChatMode.IGNORED);
 			return DefaultMessage.noteNameExist(message.getChatId(), message.getText());
-		} else if (message.getText().length() > 60) {
+		} else if (message.getText().length() > 150) {
 			// проверка длинны названия
 			chatManager.setMode(message.getChatId(), ChatMode.IGNORED);
 			return DefaultMessage.longNoteName(message.getChatId());
@@ -64,7 +65,7 @@ public class NewNoteHandler extends AbstractHandler {
 				.max(Comparator.comparing(Note::getId))
 				.orElseThrow();
 
-		note.setText(message.getText());
+		note.setText(TextCorrector.correct(message.getText()));
 
 		try {
 			noteRepository.save(note);

@@ -30,7 +30,7 @@ public class GetNoteHandler extends AbstractHandler {
 
         if (optionalNotes.isPresent() && !optionalNotes.get().isEmpty()) {
             // если заметки есть, конвертируем их в кнопки и отправляем
-            InlineKeyboardMarkup markup = new InlineKeyboardMarkup(TmeButtons.convertToListButtons(optionalNotes.get()));
+            InlineKeyboardMarkup markup = new InlineKeyboardMarkup(new TmeButtons().convertToListButtons(optionalNotes.get()));
             sendMessage.get(0).setReplyMarkup(markup);
             sendMessage.get(0).setText("Какую заметку показать?");
             chatManager.setMode(message.getChatId(), ChatMode.GET_NOTE);

@@ -23,7 +23,7 @@ public class GetNoteCallBackHandler extends AbstractHandler {
 
     @Override
     public List<SendMessage> execute() {
-        Note note = noteRepository.getByChatIdAndName(message.getChatId(), data);
+        Note note = noteRepository.findById(Integer.parseInt(data));
         chatManager.setMode(message.getChatId(), ChatMode.IGNORED);
 
         return List.of(
