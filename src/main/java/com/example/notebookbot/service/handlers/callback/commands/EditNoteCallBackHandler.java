@@ -25,9 +25,6 @@ public class EditNoteCallBackHandler extends AbstractCallBack {
     @Override
     public List<PartialBotApiMethod<Message>> execute() {
         Note note = noteRepository.findById(noteId);
-        if (note == null) {
-            return DefaultMessage.noteWasDeleted(message.getChatId());
-        }
 
         if (!note.getUpdateMod().equals(UpdateMod.NOT)) {
             switch (note.getUpdateMod()) {
@@ -43,11 +40,11 @@ public class EditNoteCallBackHandler extends AbstractCallBack {
     }
 
     private List<PartialBotApiMethod<Message>> addMod() {
-        return null;
+        return DefaultMessage.notBotInitMessage(message.getChatId());
     }
 
     private List<PartialBotApiMethod<Message>> overwriteMod() {
-        return null;
+        return DefaultMessage.notBotInitMessage(message.getChatId());
     }
 
 

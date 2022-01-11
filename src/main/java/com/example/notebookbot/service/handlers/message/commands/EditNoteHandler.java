@@ -28,7 +28,7 @@ public class EditNoteHandler extends AbstractMessageHandler {
         if (optionalNotes.isPresent() && !optionalNotes.get().isEmpty()) {
             // если заметки есть, конвертируем их в кнопки и отправляем
             InlineKeyboardMarkup markup = new InlineKeyboardMarkup(TmeButtons.convertToListButtons(optionalNotes.get()));
-            chatManager.setMode(message.getChatId(), ChatMode.GET_FILE);
+            chatManager.setMode(message.getChatId(), ChatMode.EDIT_MODE);
             return List.of(SendMessage.builder().replyMarkup(markup).text("Какую заметку обновить?").chatId(String.valueOf(message.getChatId())).build());
         }
 

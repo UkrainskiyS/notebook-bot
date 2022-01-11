@@ -12,8 +12,8 @@ public class TmeButtons {
 
     public static List<List<InlineKeyboardButton>> getNoteUpdateModButtons() {
         return List.of(List.of(
-                InlineKeyboardButton.builder().text("Дописать в конец").callbackData(UpdateMod.ADD.name()).build(),
-                InlineKeyboardButton.builder().text("Перезаписать").callbackData(UpdateMod.OVERWRITE.name()).build()
+                InlineKeyboardButton.builder().text("Дописать в конец").callbackData("1").build(),
+                InlineKeyboardButton.builder().text("Перезаписать").callbackData("2").build()
                 ));
     }
 
