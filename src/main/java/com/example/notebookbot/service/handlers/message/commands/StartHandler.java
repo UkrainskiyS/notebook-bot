@@ -2,7 +2,7 @@ package com.example.notebookbot.service.handlers.message.commands;
 
 import com.example.notebookbot.persist.chat.ChatManager;
 import com.example.notebookbot.service.handlers.AbstractHandler;
-import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
+import org.telegram.telegrambots.meta.api.methods.PartialBotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
@@ -14,7 +14,7 @@ public class StartHandler extends AbstractHandler {
 		super(message, chatManager);
 	}
 
-	public List<BotApiMethod<Message>> execute() {
+	public List<PartialBotApiMethod<Message>> execute() {
 		chatManager.saveChat(message.getChatId());
 		return List.of(
 				SendMessage.builder().text("Приветствую, " + message.getChat().getFirstName() + "!").chatId(String.valueOf(message.getChatId())).build(),

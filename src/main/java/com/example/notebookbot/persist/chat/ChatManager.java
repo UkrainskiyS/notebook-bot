@@ -31,8 +31,4 @@ public class ChatManager {
 	public boolean chatExist(Long chatId) {
 		return repository.existsByChatId(chatId);
 	}
-
-	public boolean isIgnored(Long chatId) {
-		return repository.getChatByChatId(chatId).getMode().equals(ChatMode.IGNORED);
-	}
 }

@@ -26,32 +26,4 @@ public class Note {
         this.chatId = chatId;
         this.name = name;
     }
-
-    public static Builder builder() {
-        return new Note().new Builder();
-    }
-
-    // Builder for Note
-    public class Builder {
-        private Builder() {}
-
-        public Builder setChatId(Long chatId) {
-            Note.this.chatId = chatId;
-            return this;
-        }
-
-        public Builder setName(String name) {
-            Note.this.name = name;
-            return this;
-        }
-
-        public Builder setText(String text) {
-            Note.this.text = text;
-            return this;
-        }
-
-        public Note build() {
-            return Note.this;
-        }
-    }
 }

@@ -20,8 +20,7 @@ public class BotConfig {
 
     public Set<String> getCommands() {
         Set<String> set = new HashSet<>(commands);
-        set.addAll(
-                commands.stream()
+        set.addAll(commands.stream()
                         .map(s -> s + '@' + name)
                         .collect(Collectors.toSet())
         );
