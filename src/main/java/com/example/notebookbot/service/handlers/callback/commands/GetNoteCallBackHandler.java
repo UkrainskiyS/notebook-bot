@@ -21,12 +21,12 @@ public class GetNoteCallBackHandler extends AbstractCallBack {
     @Override
     public List<PartialBotApiMethod<Message>> execute() {
         Note note = noteRepository.findById(noteId);
+        // Если note = null, значит юзер нажимает на кнопку с этой заметкой после ее удаления
         if (note == null) {
             return DefaultMessage.noteWasDeleted(message.getChatId());
         }
 
         chatManager.setMode(message.getChatId(), ChatMode.IGNORED);
-
         return NotePrinter.getMessageOneNote(message.getChatId(), note);
     }
 }

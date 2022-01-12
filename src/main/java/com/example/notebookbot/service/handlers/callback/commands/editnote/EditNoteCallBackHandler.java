@@ -23,14 +23,16 @@ public class EditNoteCallBackHandler extends AbstractEditor {
 	@Override
 	public List<PartialBotApiMethod<Message>> execute() {
 		try {
+			// Если data конвертируется в инт - значит это ид заметки, соответственно юзер на этапе выбора заметки для редактирования
 			Note note = noteRepository.findById(Integer.parseInt(data));
-			return List.of(
-					SendMessage.builder().chatId(String.valueOf(message.getChatId()))
+
+			return List.of(SendMessage.builder().chatId(String.valueOf(message.getChatId()))
 							.text("Какой формат редактирования?")
 							.replyMarkup(new InlineKeyboardMarkup(TmeButtons.getNoteUpdateModButtons(note.getId() + ":")))
 							.build()
 			);
 		} catch (NumberFormatException e) {
+			// Иначе юзер уже выбрал формат редактирования и остается лишь получить обновленный текст
 			String[] mod = data.split(":");
 			Note note = noteRepository.findById(Integer.parseInt(mod[0]));
 
@@ -39,10 +41,11 @@ public class EditNoteCallBackHandler extends AbstractEditor {
 	}
 
 	private List<PartialBotApiMethod<Message>> edit(Note note, String[] mod) {
-
+		// Вызывает метод родительского класса в соответствии с форматом
 		switch (UpdateMod.valueOf(mod[1])) {
 			case ADD: return addMod(note);
 			case OVERWRITE: return overwriteMod(note);
+			case NOT:
 			default: return null;
 		}
 	}

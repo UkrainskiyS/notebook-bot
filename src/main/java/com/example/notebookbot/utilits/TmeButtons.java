@@ -24,7 +24,9 @@ public class TmeButtons {
     /*
     * Основной метод для создания кнопок с заметками. Сложность заключалась в том, чтобы сделать его универсальным.
     * Я хотел чтобы кнопки выводились в 2 столбца. Если их нечетное колличество - добавить одну кнопку в самый низ во всю ширину.
-    * Для того чтобы не придумывать велосипед, решил использовать библиотеку для стримов StreamEx и интересный метод pairMap.
+    * Для того чтобы не придумывать велосипед, решил использовать библиотеку для стримов StreamEx и метод pairMap.
+    * Но проблема еще была в том что этот метод из массива (1, 2, 3, 4) делает ((1, 2), (2, 3), (3, 4)), хотя должно быть ((1, 2), (3, 4)).
+    * Для этого дописал метод correct, который чистит результат в шахматном порядке (через один).
      */
 
     public static List<List<InlineKeyboardButton>> convertToListButtons(List<Note> noteList) {
@@ -46,8 +48,8 @@ public class TmeButtons {
             result.add(List.of(InlineKeyboardButton.builder().text(note.getName()).callbackData(String.valueOf(note.getId())).build()));
             return correct(result);
         } else {
-            return correct(StreamEx.of(noteList).pairMap((note, note2) -> List.of(
-                    InlineKeyboardButton.builder().text(note.getName()).callbackData(String.valueOf(note.getId())).build(),
+            return correct(StreamEx.of(noteList).pairMap((note1, note2) -> List.of(
+                    InlineKeyboardButton.builder().text(note1.getName()).callbackData(String.valueOf(note1.getId())).build(),
                     InlineKeyboardButton.builder().text(note2.getName()).callbackData(String.valueOf(note2.getId())).build()
             )).toList());
         }

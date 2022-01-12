@@ -23,7 +23,6 @@ public class DeleteCallBackHandler extends AbstractCallBack {
 		noteRepository.delete(note);
 
 		chatManager.setMode(message.getChatId(), ChatMode.IGNORED);
-
 		return DefaultMessage.noteDeleted(message.getChatId(), note.getName());
 	}
 }

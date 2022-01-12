@@ -25,14 +25,14 @@ public class GetFileCallBackHandler extends AbstractCallBack {
 	@Override
 	public List<PartialBotApiMethod<Message>> execute() {
 		Note note = noteRepository.findById(noteId);
+		// Если note = null, значит юзер нажимает на кнопку с этой заметкой после ее удаления
 		if (note == null) {
 			return DefaultMessage.noteWasDeleted(message.getChatId());
 		}
 
 		chatManager.setMode(message.getChatId(), ChatMode.IGNORED);
-
+		// Преобразование заметки в поток и создание обЪекта документа
 		InputStream inputStream = new ByteArrayInputStream(note.getText().getBytes(StandardCharsets.UTF_8));
-
 		return List.of(SendDocument.builder()
 				.chatId(String.valueOf(message.getChatId()))
 				.document(new InputFile(inputStream, note.getName() + ".txt"))

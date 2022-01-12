@@ -24,8 +24,13 @@ public class EditNoteHandler extends AbstractMessageHandler {
 
     @Override
     public List<PartialBotApiMethod<Message>> execute() {
-        Optional<Note> optionalNote = noteRepository.findByChatIdAndUpdateModNot(message.getChatId(), UpdateMod.NOT);
 
+        /*
+        * Если в базе есть заметка с режимом, отличным от спящего (NOT), значит пользователь редактирует старую, вызвав метод edit.
+        * Так она изменяется в соответствии с режимом редактирования.
+        */
+
+        Optional<Note> optionalNote = noteRepository.findByChatIdAndUpdateModNot(message.getChatId(), UpdateMod.NOT);
         if (optionalNote.isPresent()) {
             return edit(optionalNote.get());
         } else {
