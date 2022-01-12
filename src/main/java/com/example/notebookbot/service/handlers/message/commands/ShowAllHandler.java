@@ -24,7 +24,6 @@ public class ShowAllHandler extends AbstractMessageHandler {
 
 		if (optionalNotes.isEmpty() || optionalNotes.get().size() == 0) {
 			return DefaultMessage.noteListEmpty(message.getChatId());
-
 		} else {
 			return NotePrinter.getMessageAllNotes(message.getChatId(), optionalNotes.get());
 		}

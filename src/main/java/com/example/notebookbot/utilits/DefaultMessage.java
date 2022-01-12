@@ -7,6 +7,10 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 
 import java.util.List;
 
+/*
+* Класс со статическими методами с заготовками стандартных сообщений
+ */
+
 public class DefaultMessage {
 
 	public static List<PartialBotApiMethod<Message>> setTextForNewNote(Long chatId, String name) {

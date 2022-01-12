@@ -16,9 +16,11 @@ public class StartHandler extends AbstractHandler {
 
 	public List<PartialBotApiMethod<Message>> execute() {
 		if (chatManager.chatExist(message.getChatId())) {
+			// При повторном использовании /start
 			return List.of(SendMessage.builder().text("Я ужу в чате!").chatId(String.valueOf(message.getChatId())).build());
 		}
 
+		// В случае приватного чата - бот обращается по имени, в случае группового - нет(
 		chatManager.saveChat(message.getChatId());
 		String helloText = message.getChat().getFirstName() == null ? "Привет, чат!"
 				: "Привет, " + message.getChat().getFirstName() + "!";

@@ -67,7 +67,8 @@ public class NewNoteHandler extends AbstractMessageHandler {
 
 		note.setText(TextCorrector.correct(message.getText()));
 
-		try {
+
+		try { // В целом бесполезная проверка, но на всякий решил оставить
 			noteRepository.save(note);
 		} catch (Exception e) {
 			return DefaultMessage.veryLongText(message.getChatId());

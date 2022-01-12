@@ -9,6 +9,10 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/*
+* Класс для вывод /getnote, /showall
+ */
+
 public class NotePrinter {
 
 	public static List<PartialBotApiMethod<Message>> getMessageAllNotes(Long chatId, List <Note> noteList) {

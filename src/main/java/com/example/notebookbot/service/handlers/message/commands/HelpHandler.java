@@ -11,6 +11,10 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.List;
 
+/*
+* Класс для чтения help.txt из /resource/static
+ */
+
 public class HelpHandler extends AbstractHandler {
 
 	public HelpHandler(Message message) {
@@ -31,9 +35,7 @@ public class HelpHandler extends AbstractHandler {
 
 		String help = null;
 		try (BufferedInputStream stream = new BufferedInputStream(new FileInputStream(pathToHelp))) {
-
 			help = new String(stream.readAllBytes());
-
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

@@ -8,6 +8,10 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKe
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+* Класс для создания листов с кнопками
+ */
+
 public class TmeButtons {
 
     public static List<List<InlineKeyboardButton>> getNoteUpdateModButtons(String id) {
@@ -16,6 +20,12 @@ public class TmeButtons {
                 InlineKeyboardButton.builder().text("Перезаписать").callbackData(id + UpdateMod.OVERWRITE.name()).build()
                 ));
     }
+
+    /*
+    * Основной метод для создания кнопок с заметками. Сложность заключалась в том, чтобы сделать его универсальным.
+    * Я хотел чтобы кнопки выводились в 2 столбца. Если их нечетное колличество - добавить одну кнопку в самый низ во всю ширину.
+    * Для того чтобы не придумывать велосипед, решил использовать библиотеку для стримов StreamEx и интересный метод pairMap.
+     */
 
     public static List<List<InlineKeyboardButton>> convertToListButtons(List<Note> noteList) {
         int size = noteList.size();

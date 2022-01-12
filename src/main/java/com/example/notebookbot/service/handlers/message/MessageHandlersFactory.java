@@ -30,6 +30,7 @@ public class MessageHandlersFactory extends AbstractHandlerFactory {
 		}
 	}
 
+	// Метод обрабатывает команды бота
 	private AbstractHandler getIgnoredHandler(ChatMode mode) {
 		if (message.getText().startsWith("/newnote")) {
 			return new NewNoteHandler(message, chatManager, noteRepository, mode);
@@ -52,6 +53,11 @@ public class MessageHandlersFactory extends AbstractHandlerFactory {
 		}
 	}
 
+	/*
+	* Метод для обработки текста.
+	* NEW_SET* - это режим, когда пользователь вводит название и содержание заметки
+	* EDIT_MODE - для обновления существующей заметки
+	 */
 	private AbstractHandler getNoCommand(ChatMode mode) {
 		switch (mode) {
 			case NEW_SET_NAME:
