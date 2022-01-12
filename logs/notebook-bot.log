@@ -1,0 +1,17 @@
+12.01.2022 22:15:41.280 [main] INFO   c.e.n.NotebookBotApplication - Starting NotebookBotApplication using Java 17.0.1 on 192.168.1.2 with PID 99455 (/Users/sergey/Desktop/notebook-bot/target/classes started by sergey in /Users/sergey/Desktop/notebook-bot)
+12.01.2022 22:15:41.281 [main] INFO   c.e.n.NotebookBotApplication - No active profile set, falling back to default profiles: default
+12.01.2022 22:15:41.794 [main] INFO   o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+12.01.2022 22:15:41.851 [main] INFO   o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 51 ms. Found 2 JPA repository interfaces.
+12.01.2022 22:15:42.165 [main] INFO   c.z.h.HikariDataSource - HikariPool-1 - Starting...
+12.01.2022 22:15:42.269 [main] INFO   c.z.h.HikariDataSource - HikariPool-1 - Start completed.
+12.01.2022 22:15:42.464 [main] INFO   o.h.j.i.u.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+12.01.2022 22:15:42.491 [main] INFO   o.hibernate.Version - HHH000412: Hibernate ORM core version 5.6.3.Final
+12.01.2022 22:15:42.556 [main] INFO   o.h.a.common.Version - HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+12.01.2022 22:15:42.598 [main] INFO   o.h.dialect.Dialect - HHH000400: Using dialect: org.hibernate.dialect.PostgreSQL10Dialect
+12.01.2022 22:15:42.893 [main] INFO   o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+12.01.2022 22:15:42.897 [main] INFO   o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+12.01.2022 22:15:43.965 [main] INFO   c.e.n.NotebookBotApplication - Started NotebookBotApplication in 3.081 seconds (JVM running for 3.896)
+12.01.2022 22:16:12.383 [notebookmanager_bot Telegram Executor] INFO   c.e.n.s.BotService - New private chat with id = 1004338253
+12.01.2022 22:16:29.654 [SpringApplicationShutdownHook] INFO   o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+12.01.2022 22:16:29.660 [SpringApplicationShutdownHook] INFO   c.z.h.HikariDataSource - HikariPool-1 - Shutdown initiated...
+12.01.2022 22:16:29.664 [SpringApplicationShutdownHook] INFO   c.z.h.HikariDataSource - HikariPool-1 - Shutdown completed.
