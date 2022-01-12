@@ -13,6 +13,7 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -56,6 +57,7 @@ public class EditNoteHandler extends AbstractMessageHandler {
             note.setText(message.getText());
         }
 
+        note.setDate(LocalDateTime.now());
         note.setUpdateMod(UpdateMod.NOT);
         noteRepository.save(note);
         chatManager.setMode(message.getChatId(), ChatMode.IGNORED);

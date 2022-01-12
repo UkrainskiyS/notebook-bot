@@ -53,7 +53,7 @@ public class NewNoteHandler extends AbstractMessageHandler {
 		} else {
 			// добавляет имя в бд
 			chatManager.setMode(message.getChatId(), ChatMode.NEW_SET_TEXT);
-			noteRepository.save(new Note(message.getChatId(), message.getText(), LocalDateTime.now(), UpdateMod.NOT));
+			noteRepository.save(new Note(message.getChatId(), message.getText(), UpdateMod.NOT));
 			return DefaultMessage.setTextForNewNote(message.getChatId(), message.getText());
 		}
 	}

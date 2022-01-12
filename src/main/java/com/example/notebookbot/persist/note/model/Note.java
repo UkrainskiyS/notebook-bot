@@ -17,7 +17,7 @@ import java.time.format.DateTimeFormatter;
 public class Note {
     @Id
     @Column(name = "id", nullable = false)
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(name = "chat_id")
@@ -30,15 +30,15 @@ public class Note {
     @Column(name = "update_mod")
     private UpdateMod updateMod;
 
-    public Note(Long chatId, String name, LocalDateTime date, UpdateMod updateMod) {
+    public Note(Long chatId, String name, UpdateMod updateMod) {
         this.chatId = chatId;
         this.name = name;
-        this.date = date;
         this.updateMod = updateMod;
+        this.date = LocalDateTime.now();
     }
 
     public String getDateString() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm:ss dd.MM.yyyy");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("H:mm:ss dd.MM.yyyy");
         return date.format(formatter);
     }
 }
