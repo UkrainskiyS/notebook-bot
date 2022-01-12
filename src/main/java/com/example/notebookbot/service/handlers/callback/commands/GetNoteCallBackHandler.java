@@ -6,9 +6,8 @@ import com.example.notebookbot.persist.note.model.Note;
 import com.example.notebookbot.persist.note.repository.NoteRepository;
 import com.example.notebookbot.service.handlers.callback.AbstractCallBack;
 import com.example.notebookbot.utilits.DefaultMessage;
-import org.telegram.telegrambots.meta.api.methods.ParseMode;
+import com.example.notebookbot.utilits.NotePrinter;
 import org.telegram.telegrambots.meta.api.methods.PartialBotApiMethod;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
 import java.util.List;
@@ -28,9 +27,6 @@ public class GetNoteCallBackHandler extends AbstractCallBack {
 
         chatManager.setMode(message.getChatId(), ChatMode.IGNORED);
 
-        return List.of(SendMessage.builder()
-                .chatId(String.valueOf(message.getChatId()))
-                .parseMode(ParseMode.MARKDOWN)
-                .text(String.format("*%s*:\n\n%s", note.getName(), note.getText())).build());
+        return NotePrinter.getMessageOneNote(message.getChatId(), note);
     }
 }

@@ -5,6 +5,7 @@ import com.example.notebookbot.persist.note.UpdateMod;
 import com.example.notebookbot.persist.note.model.Note;
 import com.example.notebookbot.persist.note.repository.NoteRepository;
 import com.example.notebookbot.service.handlers.AbstractHandler;
+import com.example.notebookbot.utilits.NotePrinter;
 import org.telegram.telegrambots.meta.api.methods.ParseMode;
 import org.telegram.telegrambots.meta.api.methods.PartialBotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -28,10 +29,7 @@ public abstract class AbstractEditor extends AbstractHandler {
         note.setUpdateMod(UpdateMod.ADD);
         noteRepository.save(note);
 
-        return List.of(
-                SendMessage.builder().chatId(String.valueOf(message.getChatId()))
-                        .parseMode(ParseMode.MARKDOWN)
-                        .text(String.format("*%s*:\n\n%s", note.getName(), note.getText())).build(),
+        return List.of(NotePrinter.getMessageOneNote(message.getChatId(), note).get(0),
 
                 SendMessage.builder().chatId(String.valueOf(message.getChatId()))
                         .text("Что добавить в заметку?").build()
@@ -42,10 +40,7 @@ public abstract class AbstractEditor extends AbstractHandler {
         note.setUpdateMod(UpdateMod.OVERWRITE);
         noteRepository.save(note);
 
-        return List.of(
-                SendMessage.builder().chatId(String.valueOf(message.getChatId()))
-                        .parseMode(ParseMode.MARKDOWN)
-                        .text(String.format("*%s*:\n\n%s", note.getName(), note.getText())).build(),
+        return List.of(NotePrinter.getMessageOneNote(message.getChatId(), note).get(0),
 
                 SendMessage.builder().chatId(String.valueOf(message.getChatId()))
                         .text("Новое содержание заметки:").build()
