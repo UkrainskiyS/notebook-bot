@@ -8,6 +8,7 @@ import com.example.notebookbot.persist.note.repository.NoteRepository;
 import com.example.notebookbot.service.handlers.message.AbstractMessageHandler;
 import com.example.notebookbot.utilits.DefaultMessage;
 import com.example.notebookbot.utilits.TmeButtons;
+import lombok.extern.slf4j.Slf4j;
 import org.telegram.telegrambots.meta.api.methods.PartialBotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -17,6 +18,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 public class EditNoteHandler extends AbstractMessageHandler {
 
     public EditNoteHandler(Message message, ChatManager chatManager, NoteRepository noteRepository) {
@@ -61,6 +63,7 @@ public class EditNoteHandler extends AbstractMessageHandler {
         note.setUpdateMod(UpdateMod.NOT);
         noteRepository.save(note);
         chatManager.setMode(message.getChatId(), ChatMode.IGNORED);
+        log.debug("Command /editnote execute");
         return List.of(SendMessage.builder().text("Заметка успешно изменена!").chatId(String.valueOf(message.getChatId())).build());
     }
 }

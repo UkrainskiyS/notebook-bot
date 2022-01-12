@@ -1,6 +1,7 @@
 package com.example.notebookbot.service.handlers.message.commands;
 
 import com.example.notebookbot.service.handlers.AbstractHandler;
+import lombok.extern.slf4j.Slf4j;
 import org.telegram.telegrambots.meta.api.methods.ParseMode;
 import org.telegram.telegrambots.meta.api.methods.PartialBotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -15,6 +16,7 @@ import java.util.List;
 * Класс для чтения help.txt из /resource/static
  */
 
+@Slf4j
 public class HelpHandler extends AbstractHandler {
 
 	public HelpHandler(Message message) {
@@ -23,6 +25,8 @@ public class HelpHandler extends AbstractHandler {
 
 	@Override
 	public List<PartialBotApiMethod<Message>> execute() {
+		log.debug("Command /help execute");
+
 		return List.of(SendMessage.builder()
 				.text(readHelpFile())
 				.chatId(String.valueOf(message.getChatId()))
@@ -37,7 +41,7 @@ public class HelpHandler extends AbstractHandler {
 		try (BufferedInputStream stream = new BufferedInputStream(new FileInputStream(pathToHelp))) {
 			help = new String(stream.readAllBytes());
 		} catch (IOException e) {
-			e.printStackTrace();
+			log.error(e.getMessage());
 		}
 		return help;
 	}

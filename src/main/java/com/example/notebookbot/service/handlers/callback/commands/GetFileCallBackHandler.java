@@ -6,6 +6,7 @@ import com.example.notebookbot.persist.note.model.Note;
 import com.example.notebookbot.persist.note.repository.NoteRepository;
 import com.example.notebookbot.service.handlers.callback.AbstractCallBack;
 import com.example.notebookbot.utilits.DefaultMessage;
+import lombok.extern.slf4j.Slf4j;
 import org.telegram.telegrambots.meta.api.methods.PartialBotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendDocument;
 import org.telegram.telegrambots.meta.api.objects.InputFile;
@@ -16,6 +17,7 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
+@Slf4j
 public class GetFileCallBackHandler extends AbstractCallBack {
 
 	public GetFileCallBackHandler(Message message, ChatManager chatManager, NoteRepository noteRepository, String data) {
@@ -33,6 +35,8 @@ public class GetFileCallBackHandler extends AbstractCallBack {
 		chatManager.setMode(message.getChatId(), ChatMode.IGNORED);
 		// Преобразование заметки в поток и создание обЪекта документа
 		InputStream inputStream = new ByteArrayInputStream(note.getText().getBytes(StandardCharsets.UTF_8));
+
+		log.debug("Command /getfile execute");
 		return List.of(SendDocument.builder()
 				.chatId(String.valueOf(message.getChatId()))
 				.document(new InputFile(inputStream, note.getName() + ".txt"))

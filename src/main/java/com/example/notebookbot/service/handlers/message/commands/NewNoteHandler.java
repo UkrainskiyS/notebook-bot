@@ -8,6 +8,7 @@ import com.example.notebookbot.persist.note.repository.NoteRepository;
 import com.example.notebookbot.service.handlers.message.AbstractMessageHandler;
 import com.example.notebookbot.utilits.DefaultMessage;
 import com.example.notebookbot.utilits.TextCorrector;
+import lombok.extern.slf4j.Slf4j;
 import org.telegram.telegrambots.meta.api.methods.PartialBotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
@@ -16,6 +17,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+@Slf4j
 public class NewNoteHandler extends AbstractMessageHandler {
 	private final ChatMode mode;
 
@@ -51,6 +53,7 @@ public class NewNoteHandler extends AbstractMessageHandler {
 			chatManager.setMode(message.getChatId(), ChatMode.IGNORED);
 			return DefaultMessage.longNoteName(message.getChatId());
 		} else {
+			log.debug("Add {} note to database", message.getText());
 			// добавляет имя в бд
 			chatManager.setMode(message.getChatId(), ChatMode.NEW_SET_TEXT);
 			noteRepository.save(new Note(message.getChatId(), message.getText(), UpdateMod.NOT));
@@ -61,19 +64,19 @@ public class NewNoteHandler extends AbstractMessageHandler {
 	// добавляет текст к созданной заметке и выставляет режим игнора
 	private List<PartialBotApiMethod<Message>> setTextMode() {
 		chatManager.setMode(message.getChatId(), ChatMode.IGNORED);
-		Note note = noteRepository.getAllByChatId(message.getChatId()).stream()
-				.max(Comparator.comparing(Note::getId))
-				.orElseThrow();
 
-		note.setText(TextCorrector.correct(message.getText()));
-
-
-		try { // В целом бесполезная проверка, но на всякий решил оставить
-			noteRepository.save(note);
-		} catch (Exception e) {
+		// Обработка максимальной длинны текста
+		if (message.getText().length() > 4000) {
 			return DefaultMessage.veryLongText(message.getChatId());
 		}
 
+		Note note = noteRepository.getAllByChatId(message.getChatId()).stream()
+				.max(Comparator.comparing(Note::getId))
+				.orElseThrow();
+		note.setText(TextCorrector.correct(message.getText()));
+		noteRepository.save(note);
+
+		log.debug("Note {} saves to database, chatId = {}", note.getName(), note.getChatId());
 		return DefaultMessage.newNoteCreated(message.getChatId(), note.getName());
 	}
 }
