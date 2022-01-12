@@ -6,9 +6,9 @@ import com.example.notebookbot.persist.note.repository.NoteRepository;
 import com.example.notebookbot.service.handlers.AbstractHandler;
 import com.example.notebookbot.service.handlers.AbstractHandlerFactory;
 import com.example.notebookbot.service.handlers.callback.commands.DeleteCallBackHandler;
-import com.example.notebookbot.service.handlers.callback.commands.EditNoteCallBackHandler;
 import com.example.notebookbot.service.handlers.callback.commands.GetFileCallBackHandler;
 import com.example.notebookbot.service.handlers.callback.commands.GetNoteCallBackHandler;
+import com.example.notebookbot.service.handlers.callback.commands.editnote.EditNoteCallBackHandler;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
 public class CallBackHandlerFactory extends AbstractHandlerFactory {

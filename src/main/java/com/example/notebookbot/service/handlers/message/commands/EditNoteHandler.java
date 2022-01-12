@@ -2,6 +2,7 @@ package com.example.notebookbot.service.handlers.message.commands;
 
 import com.example.notebookbot.persist.chat.ChatManager;
 import com.example.notebookbot.persist.chat.ChatMode;
+import com.example.notebookbot.persist.note.UpdateMod;
 import com.example.notebookbot.persist.note.model.Note;
 import com.example.notebookbot.persist.note.repository.NoteRepository;
 import com.example.notebookbot.service.handlers.message.AbstractMessageHandler;
@@ -23,15 +24,36 @@ public class EditNoteHandler extends AbstractMessageHandler {
 
     @Override
     public List<PartialBotApiMethod<Message>> execute() {
-        Optional<List<Note>> optionalNotes = noteRepository.findAllByChatId(message.getChatId());
+        Optional<Note> optionalNote = noteRepository.findByChatIdAndUpdateModNot(message.getChatId(), UpdateMod.NOT);
 
-        if (optionalNotes.isPresent() && !optionalNotes.get().isEmpty()) {
-            // если заметки есть, конвертируем их в кнопки и отправляем
-            InlineKeyboardMarkup markup = new InlineKeyboardMarkup(TmeButtons.convertToListButtons(optionalNotes.get()));
-            chatManager.setMode(message.getChatId(), ChatMode.EDIT_MODE);
-            return List.of(SendMessage.builder().replyMarkup(markup).text("Какую заметку обновить?").chatId(String.valueOf(message.getChatId())).build());
+        if (optionalNote.isPresent()) {
+            return edit(optionalNote.get());
+        } else {
+
+            Optional<List<Note>> optionalNotes = noteRepository.findAllByChatId(message.getChatId());
+
+            if (optionalNotes.isPresent() && !optionalNotes.get().isEmpty()) {
+                // если заметки есть, конвертируем их в кнопки и отправляем
+                InlineKeyboardMarkup markup = new InlineKeyboardMarkup(TmeButtons.convertToListButtons(optionalNotes.get()));
+                chatManager.setMode(message.getChatId(), ChatMode.EDIT_MODE);
+                return List.of(SendMessage.builder().replyMarkup(markup).text("Какую заметку обновить?").chatId(String.valueOf(message.getChatId())).build());
+            }
+
+            return DefaultMessage.noteListEmpty(message.getChatId());
+        }
+    }
+
+    private List<PartialBotApiMethod<Message>> edit(Note note) {
+
+        if (note.getUpdateMod().equals(UpdateMod.ADD)) {
+            note.setText(note.getText() + "\n" + message.getText());
+        } else if (note.getUpdateMod().equals(UpdateMod.OVERWRITE)) {
+            note.setText(message.getText());
         }
 
-        return DefaultMessage.noteListEmpty(message.getChatId());
+        note.setUpdateMod(UpdateMod.NOT);
+        noteRepository.save(note);
+        chatManager.setMode(message.getChatId(), ChatMode.IGNORED);
+        return List.of(SendMessage.builder().text("Заметка успешно изменена!").chatId(String.valueOf(message.getChatId())).build());
     }
 }

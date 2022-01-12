@@ -17,7 +17,7 @@ import java.time.format.DateTimeFormatter;
 public class Note {
     @Id
     @Column(name = "id", nullable = false)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
     @Column(name = "chat_id")

@@ -26,7 +26,7 @@ public class MessageHandlersFactory extends AbstractHandlerFactory {
 		if (mode.equals(ChatMode.IGNORED) && config.getCommands().contains(message.getText())) {
 			return getIgnoredHandler(mode);
 		} else {
-			return getLongHandler(mode);
+			return getNoCommand(mode);
 		}
 	}
 
@@ -52,11 +52,13 @@ public class MessageHandlersFactory extends AbstractHandlerFactory {
 		}
 	}
 
-	private AbstractHandler getLongHandler(ChatMode mode) {
+	private AbstractHandler getNoCommand(ChatMode mode) {
 		switch (mode) {
 			case NEW_SET_NAME:
 			case NEW_SET_TEXT:
 				return new NewNoteHandler(message, chatManager, noteRepository, mode);
+			case EDIT_MODE:
+				return new EditNoteHandler(message, chatManager, noteRepository);
 			default: return null;
 		}
 	}
