@@ -3,8 +3,10 @@ package com.example.notebookbot.utilits;
 
 import com.example.notebookbot.persist.note.UpdateMod;
 import com.example.notebookbot.persist.note.model.Note;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.event.annotation.AfterTestMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
@@ -16,6 +18,7 @@ import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@Slf4j
 @SpringBootTest
 public class TestUtils {
     private final String NAME = "Telegram";
@@ -26,6 +29,8 @@ public class TestUtils {
         assertEquals(TextCorrector.correct("Hello\n <<code>>, <?????>"), "Hello\n `code`, ```???```");
         assertEquals(TextCorrector.correct("<<...>>"), "`...`");
         assertEquals(TextCorrector.correct("<<...?>"), "<<...?>");
+
+        log.info("Test TextCorrector class completed successfully!");
     }
 
     @Test
@@ -45,6 +50,8 @@ public class TestUtils {
         var testOneNote = (SendMessage) NotePrinter.getMessageOneNote(CHAT_ID, notes[0]).get(0);
         assertEquals(testOneNote.getChatId(), String.valueOf(CHAT_ID));
         assertEquals(testOneNote.getText(), String.format("`%s`:\n\n%s", notes[0].getName(), notes[0].getText()));
+
+        log.info("Test NotePrinter class completed successfully!");
     }
 
     @Test
@@ -59,11 +66,13 @@ public class TestUtils {
         testDefMes((SendMessage) DefaultMessage.notBotInitMessage(CHAT_ID).get(0), "Используй /start чтобы начать использовать бота!");
         testDefMes((SendMessage) DefaultMessage.setNameForNewNote(CHAT_ID).get(0), "Как назовем новую заметку?");
         testDefMes((SendMessage) DefaultMessage.noteWasDeleted(CHAT_ID).get(0), "Эта заметка удалена!");
+
+        log.info("Test DefaultMessage class completed successfully!");
     }
 
     @Test
     public void testTmeButtons() {
-        String ID = "999:";
+        String ID = "999";
         var listButtons = TmeButtons.getNoteUpdateModButtons(ID);
         assertEquals(listButtons.get(0).get(0).getText(), "Дописать в конец");
         assertEquals(listButtons.get(0).get(0).getCallbackData(), ID + UpdateMod.ADD.name());
@@ -76,10 +85,12 @@ public class TestUtils {
         testButtons(11);
         testButtons(50);
         testButtons(101);
+
+        log.info("Test TmeButtons class completed successfully!");
     }
 
     void testButtons(int size) {
-        Note[] notes = getNoteArray(size);
+        var notes = getNoteArray(size);
         var iterate = Arrays.stream(notes).iterator();
         var testButtons = TmeButtons.convertToListButtons(new ArrayList<>(List.of(notes)));
 
