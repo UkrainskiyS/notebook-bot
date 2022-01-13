@@ -99,7 +99,7 @@ public class TestUtils {
             return;
         }
 
-        for (int i = 0; i < size % 2; i++) {
+        for (int i = 0; i < testButtons.size() - size % 2; i++) {
             testButton(testButtons.get(i).get(0), iterate.next());
             testButton(testButtons.get(i).get(1), iterate.next());
         }
