@@ -30,16 +30,17 @@ public class MainBot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
-        Optional<List<PartialBotApiMethod<Message>>> messages;
 
+        // обрабатывает ввод пользователей и команды
         if (update.hasMessage()) {
-            // обрабатывает ввод пользователей и команды
-            messages = Optional.ofNullable(service.messageHandler(update.getMessage()));
-        } else {
+            Optional.ofNullable(service.messageHandler(update.getMessage()))
+                    .ifPresent((list) -> list.forEach(this::send));
+
             // обрабатывает кнопки
-            messages = Optional.ofNullable(service.callBackQueryHandler(update.getCallbackQuery()));
+        } else if (update.hasCallbackQuery()){
+            Optional.ofNullable(service.callBackQueryHandler(update.getCallbackQuery()))
+                    .ifPresent((list) -> list.forEach(this::send));
         }
-        messages.ifPresent((list) -> list.forEach(this::send));
     }
 
     private void send(PartialBotApiMethod<Message> messageBotApiMethod) {

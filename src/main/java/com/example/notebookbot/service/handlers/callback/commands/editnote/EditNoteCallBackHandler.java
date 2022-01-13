@@ -23,7 +23,7 @@ public class EditNoteCallBackHandler extends AbstractEditor {
 	@Override
 	public List<PartialBotApiMethod<Message>> execute() {
 		try {
-			// Если data конвертируется в инт - значит это ид заметки, соответственно юзер на этапе выбора заметки для редактирования
+			// Если data конвертируется в инт - значит это id заметки, соответственно юзер на этапе выбора заметки для редактирования
 			Note note = noteRepository.findById(Integer.parseInt(data));
 
 			return List.of(SendMessage.builder().chatId(String.valueOf(message.getChatId()))

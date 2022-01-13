@@ -15,15 +15,15 @@ import java.util.List;
 public class TmeButtons {
 
     public static List<List<InlineKeyboardButton>> getNoteUpdateModButtons(String id) {
-        return List.of(List.of(
-                InlineKeyboardButton.builder().text("Дописать в конец").callbackData(id + UpdateMod.ADD.name()).build(),
-                InlineKeyboardButton.builder().text("Перезаписать").callbackData(id + UpdateMod.OVERWRITE.name()).build()
-                ));
+        return List.of(
+                List.of(InlineKeyboardButton.builder().text("Дописать в конец").callbackData(id + UpdateMod.ADD.name()).build()),
+                List.of(InlineKeyboardButton.builder().text("Перезаписать").callbackData(id + UpdateMod.OVERWRITE.name()).build())
+                );
     }
 
     /*
     * Основной метод для создания кнопок с заметками. Сложность заключалась в том, чтобы сделать его универсальным.
-    * Я хотел чтобы кнопки выводились в 2 столбца. Если их нечетное колличество - добавить одну кнопку в самый низ во всю ширину.
+    * Я хотел чтобы кнопки выводились в 2 столбца. Если их нечетное количество - добавить одну кнопку в самый низ во всю ширину.
     * Для того чтобы не придумывать велосипед, решил использовать библиотеку для стримов StreamEx и метод pairMap.
     * Но проблема еще была в том что этот метод из массива (1, 2, 3, 4) делает ((1, 2), (2, 3), (3, 4)), хотя должно быть ((1, 2), (3, 4)).
     * Для этого дописал метод correct, который чистит результат в шахматном порядке (через один).

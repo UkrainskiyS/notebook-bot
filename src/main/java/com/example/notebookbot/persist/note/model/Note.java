@@ -41,4 +41,11 @@ public class Note {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("H:mm:ss dd.MM.yyyy");
         return date.format(formatter);
     }
+
+    // for tests
+    public Note(int id, String name, LocalDateTime date) {
+        this.id = id;
+        this.name = name;
+        this.date = date;
+    }
 }
