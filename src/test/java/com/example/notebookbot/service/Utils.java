@@ -13,6 +13,7 @@ import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -62,7 +63,15 @@ public class Utils {
 	public List<Note> createNoteList(int size, Long chatId, String name) {
 		return IntStream.range(0, size)
 				.mapToObj(i -> createNote(chatId, name + i))
-				.collect(Collectors.toList());
+				.collect(Collectors.toCollection(ArrayList::new));
+	}
+
+	public List<Note> getAllFromNoteRepo(Long chatId) {
+		return noteRepository.getAllByChatId(chatId);
+	}
+
+	public Note getNote(long chatId, String name) {
+		return noteRepository.findByNameAndChatId(name, chatId);
 	}
 
 	public void deleteNote(Note note) {
