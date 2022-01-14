@@ -20,6 +20,10 @@ public class ChatManager {
 		repository.save(chat);
 	}
 
+	public Chat getChat(Long chatId) {
+		return repository.getChatByChatId(chatId);
+	}
+
 	public ChatMode getMode(Long chatId) {
 		return repository.getChatByChatId(chatId).getMode();
 	}

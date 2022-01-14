@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Getter
 @Setter
@@ -15,7 +16,7 @@ import javax.persistence.*;
 public class Chat {
 	@Id
 	@Column(name = "id", nullable = false)
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 
 	@Column(name = "chat_id")
@@ -27,5 +28,18 @@ public class Chat {
 	public Chat(Long chatId, ChatMode mode) {
 		this.chatId = chatId;
 		this.mode = mode;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Chat chat = (Chat) o;
+		return chatId.equals(chat.chatId) && mode == chat.mode;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(chatId, mode);
 	}
 }

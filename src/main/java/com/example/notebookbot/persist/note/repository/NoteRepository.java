@@ -16,6 +16,8 @@ public interface NoteRepository extends JpaRepository<Note, Integer> {
 
     Note findById(int id);
 
+    Note findByNameAndChatId(String name, Long chatId);
+
     Optional<Note> findByChatIdAndUpdateModNot(Long chatId, UpdateMod mod);
 
     boolean existsByChatIdAndName(Long chatId, String name);

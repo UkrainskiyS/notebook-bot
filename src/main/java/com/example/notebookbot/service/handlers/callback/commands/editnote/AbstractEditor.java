@@ -44,9 +44,7 @@ public abstract class AbstractEditor extends AbstractHandler {
 
         return List.of(
                 NotePrinter.getMessageOneNote(message.getChatId(), note).get(0),
-                SendMessage.builder().chatId(String.valueOf(message.getChatId())).text("Новое содержание заметки:").build()
+                SendMessage.builder().chatId(String.valueOf(message.getChatId())).text("Новое содержание заметки?").build()
         );
     }
-
-
 }

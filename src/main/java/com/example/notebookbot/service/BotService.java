@@ -2,6 +2,8 @@ package com.example.notebookbot.service;
 
 import com.example.notebookbot.config.BotConfig;
 import com.example.notebookbot.persist.chat.ChatManager;
+import com.example.notebookbot.persist.chat.ChatMode;
+import com.example.notebookbot.persist.chat.model.Chat;
 import com.example.notebookbot.persist.note.repository.NoteRepository;
 import com.example.notebookbot.service.handlers.AbstractHandler;
 import com.example.notebookbot.service.handlers.callback.CallBackHandlerFactory;
@@ -15,7 +17,6 @@ import org.telegram.telegrambots.meta.api.methods.PartialBotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
-import java.util.Collections;
 import java.util.List;
 
 @Slf4j
@@ -55,17 +56,21 @@ public class BotService {
             }
         } else {
             // бот игнорирует сообщение
-            return Collections.emptyList();
+            return null;
         }
     }
 
     // обработка кнопок
     public List<PartialBotApiMethod<Message>> callBackQueryHandler(CallbackQuery callbackQuery) {
-        CallBackHandlerFactory factory = new CallBackHandlerFactory(chatManager, noteRepository, callbackQuery.getMessage(),
-                chatManager.getMode(callbackQuery.getMessage().getChatId()), callbackQuery.getData());
+        Chat chat = chatManager.getChat(callbackQuery.getMessage().getChatId());
 
-        AbstractHandler handler = factory.getHandler();
-
-        return handler == null ? null : handler.execute();
+        if (chat == null || chat.getMode().equals(ChatMode.IGNORED)) {
+            return null;
+        } else {
+            CallBackHandlerFactory factory = new CallBackHandlerFactory(chatManager, noteRepository, callbackQuery.getMessage(),
+                    chatManager.getMode(callbackQuery.getMessage().getChatId()), callbackQuery.getData());
+            AbstractHandler handler = factory.getHandler();
+            return handler == null ? null : handler.execute();
+        }
     }
 }

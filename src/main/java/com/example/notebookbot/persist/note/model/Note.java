@@ -8,6 +8,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 
 @Getter
 @Setter
@@ -17,7 +18,7 @@ import java.time.format.DateTimeFormatter;
 public class Note {
     @Id
     @Column(name = "id", nullable = false)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
     @Column(name = "chat_id")
@@ -47,5 +48,18 @@ public class Note {
         this.id = id;
         this.name = name;
         this.date = date;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Note note = (Note) o;
+        return Objects.equals(chatId, note.chatId) && Objects.equals(name, note.name) && Objects.equals(text, note.text) && updateMod == note.updateMod;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(chatId, name, text, updateMod);
     }
 }

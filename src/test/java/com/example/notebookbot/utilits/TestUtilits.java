@@ -6,7 +6,6 @@ import com.example.notebookbot.persist.note.model.Note;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.event.annotation.AfterTestMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
@@ -20,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Slf4j
 @SpringBootTest
-public class TestUtils {
+public class TestUtilits {
     private final String NAME = "Telegram";
     private final Long CHAT_ID = 999L;
 
@@ -30,7 +29,7 @@ public class TestUtils {
         assertEquals(TextCorrector.correct("<<...>>"), "`...`");
         assertEquals(TextCorrector.correct("<<...?>"), "<<...?>");
 
-        log.info("Test TextCorrector class completed successfully!");
+        log.info("Test utilits [TextCorrector] class completed successfully!");
     }
 
     @Test
@@ -51,7 +50,7 @@ public class TestUtils {
         assertEquals(testOneNote.getChatId(), String.valueOf(CHAT_ID));
         assertEquals(testOneNote.getText(), String.format("`%s`:\n\n%s", notes[0].getName(), notes[0].getText()));
 
-        log.info("Test NotePrinter class completed successfully!");
+        log.info("Test utilits [NotePrinter] class completed successfully!");
     }
 
     @Test
@@ -67,7 +66,7 @@ public class TestUtils {
         testDefMes((SendMessage) DefaultMessage.setNameForNewNote(CHAT_ID).get(0), "Как назовем новую заметку?");
         testDefMes((SendMessage) DefaultMessage.noteWasDeleted(CHAT_ID).get(0), "Эта заметка удалена!");
 
-        log.info("Test DefaultMessage class completed successfully!");
+        log.info("Test utilits [DefaultMessage] class completed successfully!");
     }
 
     @Test
@@ -86,7 +85,7 @@ public class TestUtils {
         testButtons(50);
         testButtons(101);
 
-        log.info("Test TmeButtons class completed successfully!");
+        log.info("Test utilits [TmeButtons] class completed successfully!");
     }
 
     void testButtons(int size) {
