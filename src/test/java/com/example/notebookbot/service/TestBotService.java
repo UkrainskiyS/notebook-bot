@@ -6,6 +6,7 @@ import com.example.notebookbot.persist.chat.repository.ChatRepository;
 import com.example.notebookbot.persist.note.UpdateMod;
 import com.example.notebookbot.persist.note.model.Note;
 import com.example.notebookbot.utilits.DefaultMessage;
+import com.example.notebookbot.utilits.NotePrinter;
 import com.example.notebookbot.utilits.TmeButtons;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Order;
@@ -28,12 +29,8 @@ public class TestBotService {
 	@Autowired
 	private final ChatRepository chatRepository = Mockito.mock(ChatRepository.class);
 
-	private final String NAME = "Telegram";
-	private final String TEXT = "private final ChatRepository chatRepository = Mockito.mock(ChatRepository.class);";
 	private final long CHAT_ID_1 = 999L;
-	private final long CHAT_ID_2 = 111L;
 	private final Chat CHAT_1 = new Chat(CHAT_ID_1, ChatMode.IGNORED);
-	private final Chat CHAT_2 = new Chat(CHAT_ID_2, ChatMode.IGNORED);
 
 	@Test
 	@Order(1)
@@ -55,48 +52,89 @@ public class TestBotService {
 	@Test
 	@Order(2)
 	public void testCommands() {
-		// /newnote
-		var notes = utils.createNoteList(10, CHAT_ID_1, NAME);
+		String NAME = "Telegram";
+
+		// test /newnote
+		var notes = utils.createNoteList(30, CHAT_ID_1, NAME);
 		assertEquals(notes, utils.getNoteRepository().getAllByChatId(CHAT_ID_1));
 		assertThrows(AssertionFailedError.class, () -> utils.createNote(notes.get(0).getChatId(), notes.get(2).getName()));
 		log.info("Test command [/newnote] completed successfully!");
 
-		// /getnote
+		// test /getnote
+		notes.forEach(this::testGetNote);
+		log.info("Test command [/getnote] completed successfully!");
+
+		// test /editnote
+		notes.forEach(note -> testEditNote(note, UpdateMod.ADD));
+		notes.forEach(note -> testEditNote(note, UpdateMod.OVERWRITE));
+		log.info("Test command [/editnote] completed successfully!");
+
+		assertEquals(utils.getAllFromNoteRepo(CHAT_ID_1).size(), 30);
+
+		// /deletenote
+		notes.forEach(this::testDeleteNote);
+		assertEquals(utils.getAllFromNoteRepo(CHAT_ID_1).size(), 0);
+		log.info("Test command [/deletenote] completed successfully!");
+
+		// finish
+		assertEquals(utils.sendMessage(CHAT_ID_1, "/getnote"), DefaultMessage.noteListEmpty(CHAT_ID_1));
+		chatRepository.delete(chatRepository.getChatByChatId(CHAT_ID_1));
+		assertEquals(chatRepository.count(), 0);
+		log.info("All test completed successfully!");
+	}
+
+	void testDeleteNote(Note note) {
+		var actualButtons = SendMessage.builder().text("Какую заметку удалить?")
+				.replyMarkup(new InlineKeyboardMarkup(TmeButtons.convertToListButtons(utils.getAllFromNoteRepo(CHAT_ID_1))))
+				.chatId(CHAT_ID_1 + "").build();
+		assertEquals(utils.sendMessage(note.getChatId(), "/deletenote").get(0), actualButtons);
+		assertEquals(chatRepository.getChatByChatId(CHAT_ID_1).getMode(), ChatMode.DEL_NOTE);
+		assertEquals(utils.sendCallBack(CHAT_ID_1, note.getName(), String.valueOf(utils.getNote(CHAT_ID_1, note.getName()).getId())),
+				DefaultMessage.noteDeleted(CHAT_ID_1, note.getName()));
+		assertEquals(chatRepository.getChatByChatId(CHAT_ID_1).getMode(), ChatMode.IGNORED);
+		assertNull(utils.getNote(CHAT_ID_1, note.getName()));
+	}
+
+	void testGetNote(Note note) {
 		var actualButtons = SendMessage.builder().text("Какую заметку показать?")
 				.replyMarkup(new InlineKeyboardMarkup(TmeButtons.convertToListButtons(utils.getAllFromNoteRepo(CHAT_ID_1))))
 				.chatId(CHAT_ID_1 + "").build();
-		assertEquals(utils.sendMessage(notes.get(0).getChatId(), "/getnote").get(0), actualButtons);
+		assertEquals(utils.sendMessage(note.getChatId(), "/getnote").get(0), actualButtons);
 		assertEquals(chatRepository.getChatByChatId(CHAT_ID_1).getMode(), ChatMode.GET_NOTE);
-		assertEquals(((SendMessage) utils.sendCallBack(CHAT_ID_1, notes.get(0).getName(), String.valueOf(utils.getNote(CHAT_ID_1, notes.get(0).getName()).getId())).get(0)),
-				SendMessage.builder().text(String.format("`%s`:\n\n%s", notes.get(0).getName(), notes.get(0).getText()))
+		assertEquals(utils.sendCallBack(CHAT_ID_1, note.getName(), String.valueOf(utils.getNote(CHAT_ID_1, note.getName()).getId())).get(0),
+				SendMessage.builder().text(String.format("`%s`:\n\n%s", note.getName(), note.getText()))
 						.chatId(String.valueOf(CHAT_ID_1)).parseMode(ParseMode.MARKDOWN).build());
 		assertEquals(chatRepository.getChatByChatId(CHAT_ID_1).getMode(), ChatMode.IGNORED);
-		log.info("Test command [/getnote] completed successfully!");
-
-
-
-//		testEditNote(notes.get(0), UpdateMod.OVERWRITE);
-
 	}
 
-
 	void testEditNote(Note note, UpdateMod mod) {
+		assertEquals(utils.sendMessage(CHAT_ID_1, "/editnote").get(0), SendMessage.builder()
+				.text("Какую заметку обновить?").chatId(String.valueOf(CHAT_ID_1))
+				.replyMarkup(new InlineKeyboardMarkup(TmeButtons.convertToListButtons(utils.getAllFromNoteRepo(CHAT_ID_1))))
+				.build());
+		assertEquals(chatRepository.getChatByChatId(CHAT_ID_1).getMode(), ChatMode.EDIT_MODE);
+
 		Note noteWithId = utils.getNote(note.getChatId(), note.getName());
+		var next1 = utils.sendCallBack(CHAT_ID_1, note.getName(), String.valueOf(noteWithId.getId()));
+		assertEquals(next1.get(0), SendMessage.builder().chatId(String.valueOf(CHAT_ID_1))
+				.replyMarkup(new InlineKeyboardMarkup(TmeButtons.getNoteUpdateModButtons(noteWithId.getId() + ":")))
+				.text("Какой формат редактирования?").build());
 
-		if (mod.equals(UpdateMod.OVERWRITE)) {
-			assertEquals(((SendMessage) utils.sendCallBack(CHAT_ID_1, note.getName(), noteWithId.getId() + ":" + mod).get(0)),
-					SendMessage.builder().chatId(String.valueOf(note.getChatId())).text("Новое содержание заметки?").build());
-			assertEquals(((SendMessage) utils.sendMessage(CHAT_ID_1, TEXT).get(0)), SendMessage.builder()
-					.chatId(String.valueOf(note.getChatId())).text("Заметка успешно изменена!").build());
-			note.setText(TEXT);
-		} else {
-			assertEquals(((SendMessage) utils.sendCallBack(CHAT_ID_1, note.getName(), noteWithId.getId() + ":" + mod).get(0)),
-					SendMessage.builder().chatId(String.valueOf(note.getChatId())).text("Что добавить в заметку?").build());
-			assertEquals(((SendMessage) utils.sendMessage(CHAT_ID_1, TEXT).get(0)), SendMessage.builder()
-					.chatId(String.valueOf(note.getChatId())).text("Заметка успешно изменена!").build());
-			note.setText(note.getText() + "\n" + TEXT);
-		}
+		var next2 = utils.sendCallBack(CHAT_ID_1, note.getName(), noteWithId.getId() + ":" + mod.name());
+		assertEquals(utils.getNote(CHAT_ID_1, note.getName()).getUpdateMod(), mod);
+		var setNoteUpdate = new java.util.ArrayList<>(NotePrinter.getMessageOneNote(CHAT_ID_1, noteWithId));
+		setNoteUpdate.add(SendMessage.builder().chatId(String.valueOf(CHAT_ID_1))
+				.text(mod.equals(UpdateMod.ADD) ? "Что добавить в заметку?" : "Новое содержание заметки?").build());
+		assertEquals(next2, setNoteUpdate);
 
-		assertEquals(note, utils.getNote(CHAT_ID_1, note.getName()));
+		String TEXT = "private final ChatRepository chatRepository = Mockito.mock(ChatRepository.class);";
+
+		assertEquals(utils.sendMessage(CHAT_ID_1, TEXT).get(0), SendMessage.builder().chatId(String.valueOf(CHAT_ID_1))
+				.text("Заметка успешно изменена!").build());
+		assertEquals(utils.getNote(note.getChatId(), note.getName()).getUpdateMod(), UpdateMod.NOT);
+		assertEquals(chatRepository.getChatByChatId(CHAT_ID_1).getMode(), ChatMode.IGNORED);
+
+		noteWithId.setText(mod.equals(UpdateMod.OVERWRITE) ? TEXT : noteWithId.getText() + "\n" + TEXT);
+		assertEquals(noteWithId, utils.getNote(noteWithId.getChatId(), noteWithId.getName()));
 	}
 }

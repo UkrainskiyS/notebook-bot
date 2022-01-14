@@ -18,20 +18,12 @@
     </properties>
     <dependencies>
 
-        <!-- DB FOT DEV -->
+        <!-- DataBase -->
         <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <version>2.0.206</version>
-            <scope>compile</scope>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <scope>runtime</scope>
         </dependency>
-
-<!--        &lt;!&ndash; DataBase &ndash;&gt;-->
-<!--        <dependency>-->
-<!--            <groupId>org.postgresql</groupId>-->
-<!--            <artifactId>postgresql</artifactId>-->
-<!--            <scope>runtime</scope>-->
-<!--        </dependency>-->
 
         <!-- Telegram API -->
         <dependency>
@@ -51,20 +43,8 @@
             <artifactId>lombok</artifactId>
             <optional>true</optional>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <version>2.6.2</version>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>org.testng</groupId>
-            <artifactId>testng</artifactId>
-            <version>7.5</version>
-            <scope>test</scope>
-        </dependency>
 
-        <!-- For telegram buttons -->
+        <!-- For telegram buttons StreamEx -->
         <dependency>
             <groupId>one.util</groupId>
             <artifactId>streamex</artifactId>
@@ -85,6 +65,15 @@
             <artifactId>spring-boot-configuration-processor</artifactId>
             <optional>true</optional>
         </dependency>
+
+        <!-- Tests -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <version>2.6.2</version>
+            <optional>true</optional>
+        </dependency>
+
     </dependencies>
 
     <build>

@@ -64,7 +64,7 @@ public class BotService {
     public List<PartialBotApiMethod<Message>> callBackQueryHandler(CallbackQuery callbackQuery) {
         Chat chat = chatManager.getChat(callbackQuery.getMessage().getChatId());
 
-        if (chat == null || chat.getMode().equals(ChatMode.IGNORED)) {
+        if (chat == null) {
             return null;
         } else {
             CallBackHandlerFactory factory = new CallBackHandlerFactory(chatManager, noteRepository, callbackQuery.getMessage(),
