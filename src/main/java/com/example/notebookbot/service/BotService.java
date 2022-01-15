@@ -2,7 +2,6 @@ package com.example.notebookbot.service;
 
 import com.example.notebookbot.config.BotConfig;
 import com.example.notebookbot.persist.chat.ChatManager;
-import com.example.notebookbot.persist.chat.ChatMode;
 import com.example.notebookbot.persist.chat.model.Chat;
 import com.example.notebookbot.persist.note.repository.NoteRepository;
 import com.example.notebookbot.service.handlers.AbstractHandler;

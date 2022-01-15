@@ -7,7 +7,6 @@ import com.example.notebookbot.service.handlers.message.AbstractMessageHandler;
 import com.example.notebookbot.utilits.DefaultMessage;
 import com.example.notebookbot.utilits.NotePrinter;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.PartialBotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
@@ -23,7 +22,7 @@ public class ShowAllHandler extends AbstractMessageHandler {
 
 	@Override
 	public List<PartialBotApiMethod<Message>> execute() {
-		Optional<List<Note>> optionalNotes = noteRepository.findAllByChatId(message.getChatId());
+		Optional<List<Note>> optionalNotes = noteRepository.findAllByChatIdOrderById(message.getChatId());
 
 		log.debug("Command /showall execute");
 		if (optionalNotes.isEmpty() || optionalNotes.get().size() == 0) {

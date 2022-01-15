@@ -12,7 +12,7 @@ import java.util.Optional;
 public interface NoteRepository extends JpaRepository<Note, Integer> {
     List<Note> getAllByChatId(Long chatId);
 
-    Optional<List<Note>> findAllByChatId(Long chatId);
+    Optional<List<Note>> findAllByChatIdOrderById(Long chatId);
 
     Note findById(int id);
 

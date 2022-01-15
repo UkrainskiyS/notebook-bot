@@ -38,7 +38,7 @@ public class EditNoteHandler extends AbstractMessageHandler {
             return edit(optionalNote.get());
         } else {
 
-            Optional<List<Note>> optionalNotes = noteRepository.findAllByChatId(message.getChatId());
+            Optional<List<Note>> optionalNotes = noteRepository.findAllByChatIdOrderById(message.getChatId());
 
             if (optionalNotes.isPresent() && !optionalNotes.get().isEmpty()) {
                 // если заметки есть, конвертируем их в кнопки и отправляем

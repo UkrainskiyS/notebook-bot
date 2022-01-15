@@ -67,14 +67,10 @@ public class Utils {
 	}
 
 	public List<Note> getAllFromNoteRepo(Long chatId) {
-		return noteRepository.getAllByChatId(chatId);
+		return noteRepository.findAllByChatIdOrderById(chatId).orElse(null);
 	}
 
 	public Note getNote(long chatId, String name) {
 		return noteRepository.findByNameAndChatId(name, chatId);
-	}
-
-	public void deleteNote(Note note) {
-		noteRepository.delete(note);
 	}
 }
