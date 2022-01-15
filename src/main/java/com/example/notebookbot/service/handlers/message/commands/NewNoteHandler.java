@@ -6,8 +6,9 @@ import com.example.notebookbot.persist.note.UpdateMod;
 import com.example.notebookbot.persist.note.model.Note;
 import com.example.notebookbot.persist.note.repository.NoteRepository;
 import com.example.notebookbot.service.handlers.message.AbstractMessageHandler;
+import com.example.notebookbot.txtmark.MarkdownCorrector;
+import com.example.notebookbot.txtmark.TypeText;
 import com.example.notebookbot.utilits.DefaultMessage;
-import com.github.rjeschke.txtmark.Processor;
 import lombok.extern.slf4j.Slf4j;
 import org.telegram.telegrambots.meta.api.methods.PartialBotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -43,7 +44,8 @@ public class NewNoteHandler extends AbstractMessageHandler {
 
 	// проверяет имя новой заметки и переводит чат в режим добавления текста к ней
 	private List<PartialBotApiMethod<Message>> setNameMode() {
-		String nameNote = message.getText().replace("*", "").replace("`", "").replace("_", "");
+		MarkdownCorrector corrector = new MarkdownCorrector(message.getText(), TypeText.NAME);
+		String nameNote = corrector.correct();
 
 		if (noteRepository.existsByChatIdAndName(message.getChatId(), nameNote)) {
 			// проверка повтора названия
@@ -74,8 +76,9 @@ public class NewNoteHandler extends AbstractMessageHandler {
 		Note note = noteRepository.getAllByChatId(message.getChatId()).stream()
 				.max(Comparator.comparing(Note::getId))
 				.orElseThrow();
-		String text = Processor.process(message.getText().replace("*", "**"));
-		note.setText(Processor.process(text).replace("<p>", "").replace("</p>", ""));
+
+		MarkdownCorrector corrector = new MarkdownCorrector(message.getText(), TypeText.TEXT);
+		note.setText(corrector.correct());
 		noteRepository.save(note);
 
 		log.debug("Note {} saves to database, chatId = {}", note.getName(), note.getChatId());

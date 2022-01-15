@@ -1,6 +1,8 @@
 package com.example.notebookbot.utilits;
 
 import com.example.notebookbot.persist.note.model.Note;
+import com.example.notebookbot.txtmark.MessageDecorator;
+import com.github.rjeschke.txtmark.Processor;
 import org.telegram.telegrambots.meta.api.methods.ParseMode;
 import org.telegram.telegrambots.meta.api.methods.PartialBotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;

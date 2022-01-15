@@ -16,8 +16,8 @@
         содержание - 4000 символов.
 <b>-</b> Заметки привязаны к конкретному чату (заметка из личной переписки с ботом не будет видна в групповом чате с друзьями).
 <b>-</b> При написании заметок можно использовать редактор <code>Markdown</code>, например:
-    <b>bold text</b> - *bold text*
-    <i>italic text</i> - _italic text_
+    <b>bold text</b> - /*bold text/*
+    <i>italic text</i> - /_italic text/_
     <code>code</code> - ``code``
 
 <b>P.S.</b> Для замечаний и пожеланий пишите на почту <code>ukrainskiyss@gmail.com</code>.
