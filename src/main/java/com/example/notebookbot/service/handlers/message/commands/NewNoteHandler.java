@@ -7,7 +7,6 @@ import com.example.notebookbot.persist.note.model.Note;
 import com.example.notebookbot.persist.note.repository.NoteRepository;
 import com.example.notebookbot.service.handlers.message.AbstractMessageHandler;
 import com.example.notebookbot.utilits.DefaultMessage;
-import com.example.notebookbot.utilits.TextCorrector;
 import lombok.extern.slf4j.Slf4j;
 import org.telegram.telegrambots.meta.api.methods.PartialBotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -72,7 +71,7 @@ public class NewNoteHandler extends AbstractMessageHandler {
 		Note note = noteRepository.getAllByChatId(message.getChatId()).stream()
 				.max(Comparator.comparing(Note::getId))
 				.orElseThrow();
-		note.setText(TextCorrector.correct(message.getText()));
+		note.setText(message.getText());
 		noteRepository.save(note);
 
 		log.debug("Note {} saves to database, chatId = {}", note.getName(), note.getChatId());

@@ -24,15 +24,6 @@ public class TestUtilits {
     private final Long CHAT_ID = 999L;
 
     @Test
-    public void testTextCorrector() {
-        assertEquals(TextCorrector.correct("Hello\n <<code>>, <?????>"), "Hello\n `code`, ```???```");
-        assertEquals(TextCorrector.correct("<<...>>"), "`...`");
-        assertEquals(TextCorrector.correct("<<...?>"), "<<...?>");
-
-        log.info("Test utilits [TextCorrector] class completed successfully!");
-    }
-
-    @Test
     public void testNotePrinter() {
         Note[] notes = getNoteArray(3);
 

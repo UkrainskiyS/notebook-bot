@@ -8,6 +8,7 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
 import java.io.BufferedInputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.List;
@@ -27,17 +28,15 @@ public class HelpHandler extends AbstractHandler {
 	public List<PartialBotApiMethod<Message>> execute() {
 		log.debug("Command /help execute");
 
-		return List.of(
-				SendMessage.builder().chatId(String.valueOf(message.getChatId()))
-						.text(readFile("help")).parseMode(ParseMode.MARKDOWN).build(),
-
-				SendMessage.builder().chatId(String.valueOf(message.getChatId()))
-						.text(readFile("markdown")).build()
-		);
+		return List.of(SendMessage.builder()
+				.chatId(String.valueOf(message.getChatId()))
+				.text(readFile())
+				.parseMode(ParseMode.HTML)
+				.build());
 	}
 
-	private String readFile(String file) {
-		String pathToHelp = String.format("src/main/resources/static/%s.txt", file);
+	private String readFile() {
+		String pathToHelp = "src/main/resources/static/help.txt";
 
 		String help = null;
 		try (BufferedInputStream stream = new BufferedInputStream(new FileInputStream(pathToHelp))) {
