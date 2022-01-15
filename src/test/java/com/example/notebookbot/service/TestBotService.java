@@ -106,8 +106,8 @@ public class TestBotService {
 		assertEquals(utils.sendMessage(note.getChatId(), "/getnote").get(0), actualButtons);
 		assertEquals(chatRepository.getChatByChatId(CHAT_ID_1).getMode(), ChatMode.GET_NOTE);
 		assertEquals(utils.sendCallBack(CHAT_ID_1, note.getName(), String.valueOf(utils.getNote(CHAT_ID_1, note.getName()).getId())).get(0),
-				SendMessage.builder().text(String.format("`%s`:\n\n%s", note.getName(), note.getText()))
-						.chatId(String.valueOf(CHAT_ID_1)).parseMode(ParseMode.MARKDOWN).build());
+				SendMessage.builder().text(String.format("<code>%s</code>:\n\n%s", note.getName(), note.getText()))
+						.chatId(String.valueOf(CHAT_ID_1)).parseMode(ParseMode.HTML).build());
 		assertEquals(chatRepository.getChatByChatId(CHAT_ID_1).getMode(), ChatMode.IGNORED);
 	}
 

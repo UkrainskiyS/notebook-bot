@@ -39,7 +39,7 @@ public class TestUtilits {
         notes[0].setText(TEXT);
         var testOneNote = (SendMessage) NotePrinter.getMessageOneNote(CHAT_ID, notes[0]).get(0);
         assertEquals(testOneNote.getChatId(), String.valueOf(CHAT_ID));
-        assertEquals(testOneNote.getText(), String.format("`%s`:\n\n%s", notes[0].getName(), notes[0].getText()));
+        assertEquals(testOneNote.getText(), String.format("<code>%s</code>:\n\n%s", notes[0].getName(), notes[0].getText()));
 
         log.info("Test utilits [NotePrinter] class completed successfully!");
     }
