@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.List;
 
 /*
-* Класс для чтения help.txt из /resource/static
+* Класс для чтения help.txt and markdown.txt из /resource/static
  */
 
 @Slf4j
@@ -27,15 +27,17 @@ public class HelpHandler extends AbstractHandler {
 	public List<PartialBotApiMethod<Message>> execute() {
 		log.debug("Command /help execute");
 
-		return List.of(SendMessage.builder()
-				.text(readHelpFile())
-				.chatId(String.valueOf(message.getChatId()))
-				.parseMode(ParseMode.MARKDOWN)
-				.build());
+		return List.of(
+				SendMessage.builder().chatId(String.valueOf(message.getChatId()))
+						.text(readFile("help")).parseMode(ParseMode.MARKDOWN).build(),
+
+				SendMessage.builder().chatId(String.valueOf(message.getChatId()))
+						.text(readFile("markdown")).build()
+		);
 	}
 
-	private String readHelpFile() {
-		String pathToHelp = "src/main/resources/static/help.txt";
+	private String readFile(String file) {
+		String pathToHelp = String.format("src/main/resources/static/%s.txt", file);
 
 		String help = null;
 		try (BufferedInputStream stream = new BufferedInputStream(new FileInputStream(pathToHelp))) {

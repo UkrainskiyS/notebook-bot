@@ -27,7 +27,7 @@ public class TestBotConfig {
 				"/start",       "/start@"       + config.getName(),
 				"/help",        "/help@"        + config.getName(),
 				"/getfile",     "/getfile@"     + config.getName(),
-				"/editnote",    "/editnote@"     + config.getName()
+				"/editnote",    "/editnote@"    + config.getName()
 		);
 		assertEquals(config.getCommands(), commands);
 		assertTrue(config.getToken().matches(patternToken));

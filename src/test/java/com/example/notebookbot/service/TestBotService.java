@@ -78,6 +78,10 @@ public class TestBotService {
 
 		// finish
 		assertEquals(utils.sendMessage(CHAT_ID_1, "/getnote"), DefaultMessage.noteListEmpty(CHAT_ID_1));
+		assertEquals(utils.sendMessage(CHAT_ID_1, "/editnote"), DefaultMessage.noteListEmpty(CHAT_ID_1));
+		assertEquals(utils.sendMessage(CHAT_ID_1, "/showall"), DefaultMessage.noteListEmpty(CHAT_ID_1));
+		assertEquals(utils.sendMessage(CHAT_ID_1, "/getfile"), DefaultMessage.noteListEmpty(CHAT_ID_1));
+
 		chatRepository.delete(chatRepository.getChatByChatId(CHAT_ID_1));
 		assertEquals(chatRepository.count(), 0);
 		log.info("All test completed successfully!");
@@ -134,7 +138,7 @@ public class TestBotService {
 		assertEquals(utils.getNote(note.getChatId(), note.getName()).getUpdateMod(), UpdateMod.NOT);
 		assertEquals(chatRepository.getChatByChatId(CHAT_ID_1).getMode(), ChatMode.IGNORED);
 
-		noteWithId.setText(mod.equals(UpdateMod.OVERWRITE) ? TEXT : noteWithId.getText() + "\n" + TEXT);
+		noteWithId.setText(mod.equals(UpdateMod.OVERWRITE) ? TEXT : noteWithId.getText() + "\n\n" + TEXT);
 		assertEquals(noteWithId, utils.getNote(noteWithId.getChatId(), noteWithId.getName()));
 	}
 }

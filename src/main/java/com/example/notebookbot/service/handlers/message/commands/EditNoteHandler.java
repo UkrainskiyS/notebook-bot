@@ -54,7 +54,7 @@ public class EditNoteHandler extends AbstractMessageHandler {
     private List<PartialBotApiMethod<Message>> edit(Note note) {
 
         if (note.getUpdateMod().equals(UpdateMod.ADD)) {
-            note.setText(note.getText() + "\n" + message.getText());
+            note.setText(note.getText() + "\n\n" + message.getText());
         } else if (note.getUpdateMod().equals(UpdateMod.OVERWRITE)) {
             note.setText(message.getText());
         }
