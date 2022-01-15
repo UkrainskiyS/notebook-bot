@@ -40,7 +40,7 @@ public class TmeButtons {
             Note note = noteList.get(size - 1);
             noteList.remove(note);
 
-            var result =  StreamEx.of(noteList).pairMap((note1, note2) -> List.of(
+            List<List<InlineKeyboardButton>> result =  StreamEx.of(noteList).pairMap((note1, note2) -> List.of(
                                 InlineKeyboardButton.builder().text(note1.getName()).callbackData(String.valueOf(note1.getId())).build(),
                                 InlineKeyboardButton.builder().text(note2.getName()).callbackData(String.valueOf(note2.getId())).build()
             )).toList();
@@ -56,7 +56,7 @@ public class TmeButtons {
     }
 
     private static List<List<InlineKeyboardButton>> correct(List<List<InlineKeyboardButton>> list) {
-        var result = new ArrayList<List<InlineKeyboardButton>>();
+        List<List<InlineKeyboardButton>> result = new ArrayList<>();
 
         for (int i = 0; i < list.size(); i++) {
             if (i % 2 == 0 || list.get(i).size() == 1) {

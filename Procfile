@@ -1,0 +1,1 @@
+worker: java -jar target/notebook-bot-1.0.0-SNAPSHOT.jar
