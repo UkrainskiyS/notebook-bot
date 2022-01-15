@@ -29,9 +29,9 @@ public class NotePrinter {
 	public static List<PartialBotApiMethod<Message>> getMessageOneNote(Long chatId, Note note) {
 		return List.of(
 				SendMessage.builder()
-						.parseMode(ParseMode.MARKDOWN)
+						.parseMode(ParseMode.HTML)
 						.chatId(String.valueOf(chatId))
-						.text(String.format("`%s`:\n\n%s", note.getName(), note.getText()))
+						.text(String.format("<code>%s</code>:\n\n%s", note.getName(), note.getText()))
 						.build()
 		);
 	}

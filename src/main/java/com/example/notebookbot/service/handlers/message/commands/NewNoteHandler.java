@@ -7,6 +7,7 @@ import com.example.notebookbot.persist.note.model.Note;
 import com.example.notebookbot.persist.note.repository.NoteRepository;
 import com.example.notebookbot.service.handlers.message.AbstractMessageHandler;
 import com.example.notebookbot.utilits.DefaultMessage;
+import com.github.rjeschke.txtmark.Processor;
 import lombok.extern.slf4j.Slf4j;
 import org.telegram.telegrambots.meta.api.methods.PartialBotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -42,20 +43,22 @@ public class NewNoteHandler extends AbstractMessageHandler {
 
 	// проверяет имя новой заметки и переводит чат в режим добавления текста к ней
 	private List<PartialBotApiMethod<Message>> setNameMode() {
-		if (noteRepository.existsByChatIdAndName(message.getChatId(), message.getText())) {
+		String nameNote = message.getText().replace("*", "").replace("`", "").replace("_", "");
+
+		if (noteRepository.existsByChatIdAndName(message.getChatId(), nameNote)) {
 			// проверка повтора названия
 			chatManager.setMode(message.getChatId(), ChatMode.IGNORED);
-			return DefaultMessage.noteNameExist(message.getChatId(), message.getText());
-		} else if (message.getText().length() > 150) {
+			return DefaultMessage.noteNameExist(message.getChatId(), nameNote);
+		} else if (nameNote.length() > 150) {
 			// проверка длинны названия
 			chatManager.setMode(message.getChatId(), ChatMode.IGNORED);
 			return DefaultMessage.longNoteName(message.getChatId());
 		} else {
-			log.debug("Add {} note to database", message.getText());
 			// добавляет имя в бд
 			chatManager.setMode(message.getChatId(), ChatMode.NEW_SET_TEXT);
-			noteRepository.save(new Note(message.getChatId(), message.getText(), UpdateMod.NOT));
-			return DefaultMessage.setTextForNewNote(message.getChatId(), message.getText());
+			noteRepository.save(new Note(message.getChatId(), nameNote, UpdateMod.NOT));
+			log.debug("Add {} note to database", nameNote);
+			return DefaultMessage.setTextForNewNote(message.getChatId(), nameNote);
 		}
 	}
 
@@ -71,7 +74,8 @@ public class NewNoteHandler extends AbstractMessageHandler {
 		Note note = noteRepository.getAllByChatId(message.getChatId()).stream()
 				.max(Comparator.comparing(Note::getId))
 				.orElseThrow();
-		note.setText(message.getText());
+		String text = Processor.process(message.getText().replace("*", "**"));
+		note.setText(Processor.process(text).replace("<p>", "").replace("</p>", ""));
 		noteRepository.save(note);
 
 		log.debug("Note {} saves to database, chatId = {}", note.getName(), note.getChatId());

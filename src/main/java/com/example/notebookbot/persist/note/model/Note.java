@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
@@ -35,7 +36,7 @@ public class Note {
         this.chatId = chatId;
         this.name = name;
         this.updateMod = updateMod;
-        this.date = LocalDateTime.now();
+        this.date = LocalDateTime.now(ZoneId.of("Europe/Moscow"));
     }
 
     public String getDateString() {
