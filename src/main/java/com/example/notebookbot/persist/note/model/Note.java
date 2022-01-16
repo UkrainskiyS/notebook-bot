@@ -43,12 +43,16 @@ public class Note {
         this.chatId = chatId;
         this.name = name;
         this.updateMod = updateMod;
-        this.date = LocalDateTime.now(ZoneId.of("Europe/Moscow"));
     }
 
     public String getDateString() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("H:mm:ss dd.MM.yyyy");
         return date.format(formatter);
+    }
+
+    public void setText(String text) {
+        this.date = LocalDateTime.now(ZoneId.of("Europe/Moscow"));
+        this.text = text;
     }
 
     // for tests

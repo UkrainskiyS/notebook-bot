@@ -15,3 +15,8 @@ CREATE TABLE chats (
    chat_id INTEGER NOT NULL,
    mode VARCHAR(30)
 );
+
+insert into chats (chat_id, mode) values (1004338253, 'IGNORED');
+
+insert into notes (chat_id, name, date, text, update_mod)
+values (1004338253, 'test', current_date, 'id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,CREATE TABLE chats (   mode VARCHAR(30));', 'NOT');

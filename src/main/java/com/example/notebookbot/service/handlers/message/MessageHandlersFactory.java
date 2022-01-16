@@ -12,26 +12,23 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 
 public class MessageHandlersFactory extends AbstractHandlerFactory {
 	private final BotConfig config;
-	private final ChatMode mode;
 
-	public MessageHandlersFactory(ChatManager chatManager, NoteRepository noteRepository, Message message,
-								  BotConfig config, ChatMode mode) {
-		super(chatManager, noteRepository, message, mode);
+	public MessageHandlersFactory(ChatManager chatManager, NoteRepository noteRepository, Message message, BotConfig config) {
+		super(chatManager, noteRepository, message);
 		this.config = config;
-		this.mode = mode;
 	}
 
 	@Override
 	public AbstractHandler getHandler() {
-		if (mode.equals(ChatMode.IGNORED) && config.getCommands().contains(message.getText())) {
-			return getIgnoredHandler(mode);
+		if (chatManager.getMode(message.getChatId()).equals(ChatMode.IGNORED) && config.getCommands().contains(message.getText())) {
+			return getIgnoredHandler();
 		} else {
-			return getNoCommand(mode);
+			return null;
 		}
 	}
 
 	// Метод обрабатывает команды бота
-	private AbstractHandler getIgnoredHandler(ChatMode mode) {
+	private AbstractHandler getIgnoredHandler() {
 		if (message.getText().startsWith("/newnote")) {
 			return new NewNoteHandler(message, config);
 		} else if (message.getText().startsWith("/deletenote")) {
@@ -50,22 +47,6 @@ public class MessageHandlersFactory extends AbstractHandlerFactory {
 			return new EditNoteHandler(message, chatManager, noteRepository);
 		}else {
 			return null;
-		}
-	}
-
-	/*
-	* Метод для обработки текста.
-	* NEW_SET* - это режим, когда пользователь вводит название и содержание заметки
-	* EDIT_MODE - для обновления существующей заметки
-	 */
-	private AbstractHandler getNoCommand(ChatMode mode) {
-		switch (mode) {
-			case NEW_SET_NAME:
-			case NEW_SET_TEXT:
-				return new NewNoteHandler(message, config);
-			case EDIT_MODE:
-				return new EditNoteHandler(message, chatManager, noteRepository);
-			default: return null;
 		}
 	}
 }

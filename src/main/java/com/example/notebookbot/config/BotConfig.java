@@ -19,7 +19,6 @@ public class BotConfig {
     private String token;
     private Set<String> commands;
     private String host;
-    private int port;
 
     public Set<String> getCommands() {
         Set<String> set = new HashSet<>(commands);

@@ -19,13 +19,6 @@
     </properties>
     <dependencies>
 
-        <!-- TxtMark for convert markdown to html -->
-        <dependency>
-            <groupId>com.github.rjeschke</groupId>
-            <artifactId>txtmark</artifactId>
-            <version>0.13</version>
-        </dependency>
-
         <!-- DataBase -->
         <dependency>
             <groupId>org.postgresql</groupId>

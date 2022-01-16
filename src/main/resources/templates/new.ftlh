@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Новая заметка</title>
+    <title>Создание заметка</title>
 <#--    <link href="/css/new.css" rel="stylesheet">-->
 </head>
 <body>
@@ -27,6 +27,6 @@
         <button type="submit" onclick="add()">Сохранить</button>
     </div>
 
-<script type="text/javascript" src="/js/add.js"></script>
+    <script type="text/javascript" src="/js/add.js"></script>
 </body>
 </html>

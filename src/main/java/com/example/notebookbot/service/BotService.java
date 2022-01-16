@@ -21,22 +21,21 @@ import java.util.List;
 @Slf4j
 @Service
 public class BotService {
-    private final ChatManager chatManager;
     private final NoteRepository noteRepository;
+    private final ChatManager chatManager;
     private final BotConfig config;
 
     @Autowired
     public BotService(ChatManager chatManager, NoteRepository noteRepository, BotConfig config) {
-        this.chatManager = chatManager;
         this.noteRepository = noteRepository;
+        this.chatManager = chatManager;
         this.config = config;
     }
 
     public List<PartialBotApiMethod<Message>> messageHandler(Message message) {
         // условие, при котором бот в текущем чате инициализирован
         if (chatManager.chatExist(message.getChatId())) {
-            MessageHandlersFactory factory = new MessageHandlersFactory(chatManager, noteRepository, message, config,
-                    chatManager.getMode(message.getChatId()));
+            MessageHandlersFactory factory = new MessageHandlersFactory(chatManager, noteRepository, message, config);
             AbstractHandler handler = factory.getHandler();
 
             return handler == null ? null : handler.execute();
@@ -66,8 +65,7 @@ public class BotService {
         if (chat == null) {
             return null;
         } else {
-            CallBackHandlerFactory factory = new CallBackHandlerFactory(chatManager, noteRepository, callbackQuery.getMessage(),
-                    chatManager.getMode(callbackQuery.getMessage().getChatId()), callbackQuery.getData());
+            CallBackHandlerFactory factory = new CallBackHandlerFactory(chatManager, noteRepository, callbackQuery, config);
             AbstractHandler handler = factory.getHandler();
             return handler == null ? null : handler.execute();
         }

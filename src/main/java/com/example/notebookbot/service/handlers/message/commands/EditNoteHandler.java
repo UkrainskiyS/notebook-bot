@@ -28,42 +28,15 @@ public class EditNoteHandler extends AbstractMessageHandler {
     @Override
     public List<PartialBotApiMethod<Message>> execute() {
 
-        /*
-        * Если в базе есть заметка с режимом, отличным от спящего (NOT), значит пользователь редактирует старую, вызвав метод edit.
-        * Так она изменяется в соответствии с режимом редактирования.
-        */
+        Optional<List<Note>> optionalNotes = noteRepository.findAllByChatIdOrderById(message.getChatId());
 
-        Optional<Note> optionalNote = noteRepository.findByChatIdAndUpdateModNot(message.getChatId(), UpdateMod.NOT);
-        if (optionalNote.isPresent()) {
-            return edit(optionalNote.get());
-        } else {
-
-            Optional<List<Note>> optionalNotes = noteRepository.findAllByChatIdOrderById(message.getChatId());
-
-            if (optionalNotes.isPresent() && !optionalNotes.get().isEmpty()) {
-                // если заметки есть, конвертируем их в кнопки и отправляем
-                InlineKeyboardMarkup markup = new InlineKeyboardMarkup(TmeButtons.convertToListButtons(optionalNotes.get()));
-                chatManager.setMode(message.getChatId(), ChatMode.EDIT_MODE);
-                return List.of(SendMessage.builder().replyMarkup(markup).text("Какую заметку обновить?").chatId(String.valueOf(message.getChatId())).build());
-            }
-
-            return DefaultMessage.noteListEmpty(message.getChatId());
-        }
-    }
-
-    private List<PartialBotApiMethod<Message>> edit(Note note) {
-
-        if (note.getUpdateMod().equals(UpdateMod.ADD)) {
-            note.setText(note.getText() + "\n\n" + message.getText());
-        } else if (note.getUpdateMod().equals(UpdateMod.OVERWRITE)) {
-            note.setText(message.getText());
+        if (optionalNotes.isPresent() && !optionalNotes.get().isEmpty()) {
+            // если заметки есть, конвертируем их в кнопки и отправляем
+            InlineKeyboardMarkup markup = new InlineKeyboardMarkup(TmeButtons.convertToListButtons(optionalNotes.get()));
+            chatManager.setMode(message.getChatId(), ChatMode.EDIT_MODE);
+            return List.of(SendMessage.builder().replyMarkup(markup).text("Какую заметку обновить?").chatId(String.valueOf(message.getChatId())).build());
         }
 
-        note.setDate(LocalDateTime.now());
-        note.setUpdateMod(UpdateMod.NOT);
-        noteRepository.save(note);
-        chatManager.setMode(message.getChatId(), ChatMode.IGNORED);
-        log.debug("Command /editnote execute");
-        return List.of(SendMessage.builder().text("Заметка успешно изменена!").chatId(String.valueOf(message.getChatId())).build());
+        return DefaultMessage.noteListEmpty(message.getChatId());
     }
 }

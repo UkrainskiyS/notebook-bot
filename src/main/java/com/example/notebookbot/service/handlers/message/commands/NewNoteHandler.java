@@ -3,6 +3,7 @@ package com.example.notebookbot.service.handlers.message.commands;
 import com.example.notebookbot.config.BotConfig;
 import com.example.notebookbot.service.handlers.AbstractHandler;
 import lombok.extern.slf4j.Slf4j;
+import org.telegram.telegrambots.meta.api.methods.ParseMode;
 import org.telegram.telegrambots.meta.api.methods.PartialBotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -21,13 +22,15 @@ public class NewNoteHandler extends AbstractHandler {
 
 	@Override
 	public List<PartialBotApiMethod<Message>> execute() {
-		String url = config.getHost() + ":" + config.getPort() + "/new?chat=" + message.getChatId();
+		String text = "Для создания новой заметки откройте ссылку <code>" +
+				config.getHost() + "/new?chat=" + message.getChatId() +
+				"</code> в браузере!";
 
-		return List.of(
-				SendMessage.builder()
-						.chatId(String.valueOf(message.getChatId()))
-						.text("Создайте заметку в редакторе по ссылке ниже!\n\n" + url)
-						.build()
+		return List.of(SendMessage.builder()
+				.chatId(String.valueOf(message.getChatId()))
+				.text(text)
+				.parseMode(ParseMode.HTML)
+				.build()
 		);
 	}
 }

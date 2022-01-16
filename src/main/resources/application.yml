@@ -6,8 +6,7 @@ bot:
   name: TmNoterBot
   token: 5051136084:AAEtWFwPQ1mSJ3TjFJE0j4zaoutb-MJZK3g
 
-  host: http://localhost
-  port: 8081
+  host: http://localhost:8081
 
   commands:
   - /newnote

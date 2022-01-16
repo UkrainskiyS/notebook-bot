@@ -33,7 +33,7 @@ public class GetFileCallBackHandler extends AbstractCallBack {
 		}
 
 		chatManager.setMode(message.getChatId(), ChatMode.IGNORED);
-		// Преобразование заметки в поток и создание обЪекта документа
+		// Преобразование заметки в поток и создание объекта документа
 		InputStream inputStream = new ByteArrayInputStream(note.getText().getBytes(StandardCharsets.UTF_8));
 
 		log.debug("Command /getfile execute");
