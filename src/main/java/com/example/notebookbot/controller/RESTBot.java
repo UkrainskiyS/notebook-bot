@@ -25,7 +25,7 @@ public class RESTBot {
     public void edit(@RequestBody Map<String, String> body, HttpServletResponse response) {
         Optional<Note> note = Optional.ofNullable(noteRepository.findById(Integer.parseInt(body.get("id"))));
         if (note.isPresent()) {
-            note.get().setText(body.get("text"));
+            note.get().setText(body.get("text").replace("**", "*"));
             noteRepository.save(note.get());
             response.setStatus(HttpServletResponse.SC_OK);
         } else {
@@ -38,6 +38,7 @@ public class RESTBot {
         if (noteRepository.existsByChatIdAndName(note.getChatId(), note.getName())) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         } else {
+            note.setText(note.getText().replace("**", "*"));
             note.setDate(LocalDateTime.now(ZoneId.of("Europe/Moscow")));
             note.setUpdateMod(UpdateMod.NOT);
             noteRepository.save(note);

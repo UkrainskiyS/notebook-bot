@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+    <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
     <title>Редактирование заметки</title>
 </head>
 <body>
@@ -17,6 +19,7 @@
         <button type="submit" onclick="edit()">Сохранить</button>
     </div>
 
+    <script>var simplemde = new SimpleMDE();</script>
     <script type="text/javascript" src="/js/add.js"></script>
 </body>
 </html>

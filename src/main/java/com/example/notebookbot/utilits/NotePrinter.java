@@ -20,7 +20,7 @@ public class NotePrinter {
 				SendMessage.builder().chatId(String.valueOf(chatId))
 						.parseMode(ParseMode.MARKDOWN)
 						.text(noteList.stream()
-								.map(note -> "- `" + note.getName() + "`,\t\tобновлена `" + note.getDateString() + "`")
+								.map(note -> "- `" + note.getName() + "`,\t\tобновлена ```" + note.getDateString() + "```")
 								.collect(Collectors.joining("\n", "*Все заметки*:\n", "")))
 						.build()
 		);
@@ -29,9 +29,9 @@ public class NotePrinter {
 	public static List<PartialBotApiMethod<Message>> getMessageOneNote(Long chatId, Note note) {
 		return List.of(
 				SendMessage.builder()
-						.parseMode(ParseMode.HTML)
+						.parseMode(ParseMode.MARKDOWN)
 						.chatId(String.valueOf(chatId))
-						.text(String.format("<code>%s</code>:\n\n%s", note.getName(), note.getText()))
+						.text(String.format("`%s`:\n\n%s", note.getName(), note.getText()))
 						.build()
 		);
 	}

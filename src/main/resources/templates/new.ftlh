@@ -2,8 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+    <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
     <title>Создание заметка</title>
-<#--    <link href="/css/new.css" rel="stylesheet">-->
 </head>
 <body>
 
@@ -27,6 +28,7 @@
         <button type="submit" onclick="add()">Сохранить</button>
     </div>
 
+    <script>var simplemde = new SimpleMDE();</script>
     <script type="text/javascript" src="/js/add.js"></script>
 </body>
 </html>
