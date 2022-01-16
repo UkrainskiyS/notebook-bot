@@ -33,7 +33,7 @@ public class MessageHandlersFactory extends AbstractHandlerFactory {
 	// Метод обрабатывает команды бота
 	private AbstractHandler getIgnoredHandler(ChatMode mode) {
 		if (message.getText().startsWith("/newnote")) {
-			return new NewNoteHandler(message, chatManager, noteRepository, mode);
+			return new NewNoteHandler(message, config);
 		} else if (message.getText().startsWith("/deletenote")) {
 			return new DeleteHandler(message, chatManager, noteRepository);
 		} else if (message.getText().startsWith("/showall")) {
@@ -62,7 +62,7 @@ public class MessageHandlersFactory extends AbstractHandlerFactory {
 		switch (mode) {
 			case NEW_SET_NAME:
 			case NEW_SET_TEXT:
-				return new NewNoteHandler(message, chatManager, noteRepository, mode);
+				return new NewNoteHandler(message, config);
 			case EDIT_MODE:
 				return new EditNoteHandler(message, chatManager, noteRepository);
 			default: return null;

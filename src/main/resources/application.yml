@@ -1,8 +1,13 @@
 bot:
 #  name: ${BOT_NAME}
 #  token: ${BOT_TOKEN}
-  name: notebookmanager_bot
-  token: 5048393640:AAGA0cYs7DKEm92a6v_QcTDUEFVkIX0p87Q
+#  name: notebookmanager_bot
+#  token: 5048393640:AAGA0cYs7DKEm92a6v_QcTDUEFVkIX0p87Q
+  name: TmNoterBot
+  token: 5051136084:AAEtWFwPQ1mSJ3TjFJE0j4zaoutb-MJZK3g
+
+  host: http://localhost
+  port: 8081
 
   commands:
   - /newnote

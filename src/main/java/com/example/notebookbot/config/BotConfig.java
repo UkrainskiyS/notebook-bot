@@ -6,6 +6,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -17,6 +18,8 @@ public class BotConfig {
     private String name;
     private String token;
     private Set<String> commands;
+    private String host;
+    private int port;
 
     public Set<String> getCommands() {
         Set<String> set = new HashSet<>(commands);

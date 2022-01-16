@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -22,10 +23,16 @@ public class Note {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @NotNull
     @Column(name = "chat_id")
     private Long chatId;
+
+    @NotNull
     private String name;
+
     private LocalDateTime date;
+
+    @NotNull
     private String text;
 
     @Enumerated(value = EnumType.STRING)

@@ -35,7 +35,7 @@ public class HelpHandler extends AbstractHandler {
 	}
 
 	private String readFile() {
-		String pathToHelp = "src/main/resources/static/help.txt";
+		String pathToHelp = "src/main/resources/static/info/help.txt";
 
 		String help = null;
 		try (BufferedInputStream stream = new BufferedInputStream(new FileInputStream(pathToHelp))) {
