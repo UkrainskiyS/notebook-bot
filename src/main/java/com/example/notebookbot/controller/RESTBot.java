@@ -25,7 +25,7 @@ public class RESTBot {
     public void edit(@RequestBody Map<String, String> params, HttpServletResponse response) {
         Optional<Note> note = noteRepository.findByUuid(params.get("uuid"));
         if (note.isPresent()) {
-            noteRepository.save(note.get().update(params.get("text").replace("**", "*")));
+            noteRepository.save(note.get().update(params.get("text")));
             response.setStatus(HttpServletResponse.SC_OK);
         } else {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -40,8 +40,8 @@ public class RESTBot {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             } else {
                 Note note = new Note(chat.get().getChatId(), param.get("name"));
-                noteRepository.save(note.update(param.get("text").replace("**", "***")));
-                chatManager.updateUuid(chat.get());
+                noteRepository.save(note.update(param.get("text")));
+                chatManager.updateUuid(chat.get().update());
                 response.setStatus(HttpServletResponse.SC_OK);
             }
         } else {

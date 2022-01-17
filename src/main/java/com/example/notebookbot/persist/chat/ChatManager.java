@@ -45,7 +45,7 @@ public class ChatManager {
 	}
 
 	public void saveChat(Long chatId) {
-		repository.save(new Chat(chatId, ChatMode.IGNORED));
+		repository.save(new Chat(chatId));
 	}
 
 	public boolean chatExist(Long chatId) {

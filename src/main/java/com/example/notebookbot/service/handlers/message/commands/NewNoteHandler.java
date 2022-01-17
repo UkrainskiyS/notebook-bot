@@ -23,9 +23,9 @@ public class NewNoteHandler extends AbstractHandler {
 
 	@Override
 	public List<PartialBotApiMethod<Message>> execute() {
-		String text = "Для создания новой заметки откройте ссылку <code>" +
+		String text = "Для создания новой заметки откройте ссылку " +
 				config.getHost() + "/new?chat=" + chatManager.getChat(message.getChatId()).getUuid() +
-				"</code> в браузере!";
+				" в браузере!";
 
 		return List.of(SendMessage.builder()
 				.chatId(String.valueOf(message.getChatId()))

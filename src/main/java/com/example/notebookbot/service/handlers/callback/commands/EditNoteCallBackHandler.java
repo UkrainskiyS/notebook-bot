@@ -24,14 +24,15 @@ public class EditNoteCallBackHandler extends AbstractCallBack {
 	@Override
 	public List<PartialBotApiMethod<Message>> execute() {
 		Note note = super.noteRepository.findById(super.noteId);
-		String text = "Для редактирования заметки откройте ссылку <code>" +
-				config.getHost() + "/edit?note=" + note.getUuid() + "</code> в браузере!";
+		String text = "Для редактирования заметки откройте ссылку " +
+				config.getHost() + "/edit?note=" + note.getUuid() + " в браузере!";
 
 		chatManager.setMode(message.getChatId(), ChatMode.IGNORED);
 		return List.of(SendMessage.builder()
 				.chatId(String.valueOf(message.getChatId()))
 				.text(text)
 				.parseMode(ParseMode.HTML)
+				.disableWebPagePreview(true)
 				.build()
 		);
 	}

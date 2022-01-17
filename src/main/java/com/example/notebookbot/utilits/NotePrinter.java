@@ -31,7 +31,7 @@ public class NotePrinter {
 				SendMessage.builder()
 						.parseMode(ParseMode.MARKDOWN)
 						.chatId(String.valueOf(chatId))
-						.text(String.format("`%s`:\n\n%s", note.getName(), note.getText()))
+						.text(String.format("*%s*:\n\n%s", note.getName(), note.getText()))
 						.build()
 		);
 	}

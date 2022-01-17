@@ -10,8 +10,10 @@
 
     <div>
         <div id="name">
-            <label for="name_note">Название: </label>
-            <input id="name_note" type="text"/>
+            <label for="name_note">
+                Название заметки:
+                <input type="text" id="name_note" placeholder="Писать сюда">
+            </label>
         </div>
 
         <br>
@@ -28,7 +30,12 @@
         <button type="submit" onclick="add()">Сохранить</button>
     </div>
 
-    <script>var simplemde = new SimpleMDE();</script>
+    <script>var simplemde = new SimpleMDE({
+            blockStyles: {
+                bold: "*",
+                italic: "_"
+            }});
+    </script>
     <script type="text/javascript" src="/js/add.js"></script>
 </body>
 </html>

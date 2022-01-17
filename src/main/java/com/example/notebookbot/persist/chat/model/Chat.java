@@ -17,7 +17,7 @@ import java.util.UUID;
 public class Chat {
 	@Id
 	@Column(name = "id", nullable = false)
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
 	@Column(name = "chat_id")
@@ -28,27 +28,14 @@ public class Chat {
 
 	private String uuid;
 
-	public Chat(Long chatId, ChatMode mode) {
+	public Chat(Long chatId) {
 		this.chatId = chatId;
-		this.mode = mode;
+		this.mode = ChatMode.IGNORED;
 		this.uuid = UUID.randomUUID().toString();
 	}
 
 	public Chat update() {
 		this.uuid = UUID.randomUUID().toString();
 		return this;
-	}
-
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
-		Chat chat = (Chat) o;
-		return chatId.equals(chat.chatId) && mode == chat.mode;
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(chatId, mode);
 	}
 }

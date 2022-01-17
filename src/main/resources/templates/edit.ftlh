@@ -8,7 +8,7 @@
 </head>
 <body>
 
-    <h4>Редактирование заметки ${note.name}</h4>
+    <h3>Редактирование заметки <i>${note.name}</i></h3>
 <br>
     <div id="text">
         <label for="text_note">Содержание: </label>
