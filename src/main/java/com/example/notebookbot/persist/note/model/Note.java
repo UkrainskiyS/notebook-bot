@@ -1,6 +1,5 @@
 package com.example.notebookbot.persist.note.model;
 
-import com.example.notebookbot.persist.note.UpdateMod;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,7 +9,7 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.Objects;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -20,7 +19,7 @@ import java.util.Objects;
 public class Note {
     @Id
     @Column(name = "id", nullable = false)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
     @NotNull
@@ -35,43 +34,23 @@ public class Note {
     @NotNull
     private String text;
 
-    @Enumerated(value = EnumType.STRING)
-    @Column(name = "update_mod")
-    private UpdateMod updateMod;
+    private String uuid;
 
-    public Note(Long chatId, String name, UpdateMod updateMod) {
+
+    public Note(Long chatId, String name) {
         this.chatId = chatId;
         this.name = name;
-        this.updateMod = updateMod;
+    }
+
+    public Note update(String text) {
+        this.text = text;
+        this.date = LocalDateTime.now(ZoneId.of("Europe/Moscow"));
+        this.uuid = this.chatId + "-" + UUID.randomUUID();
+        return this;
     }
 
     public String getDateString() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("H:mm:ss dd.MM.yyyy");
         return date.format(formatter);
-    }
-
-    public void setText(String text) {
-        this.date = LocalDateTime.now(ZoneId.of("Europe/Moscow"));
-        this.text = text;
-    }
-
-    // for tests
-    public Note(int id, String name, LocalDateTime date) {
-        this.id = id;
-        this.name = name;
-        this.date = date;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Note note = (Note) o;
-        return Objects.equals(chatId, note.chatId) && Objects.equals(name, note.name) && Objects.equals(text, note.text) && updateMod == note.updateMod;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(chatId, name, text, updateMod);
     }
 }

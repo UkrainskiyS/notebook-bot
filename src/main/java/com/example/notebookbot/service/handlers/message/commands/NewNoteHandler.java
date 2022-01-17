@@ -1,6 +1,7 @@
 package com.example.notebookbot.service.handlers.message.commands;
 
 import com.example.notebookbot.config.BotConfig;
+import com.example.notebookbot.persist.chat.ChatManager;
 import com.example.notebookbot.service.handlers.AbstractHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.telegram.telegrambots.meta.api.methods.ParseMode;
@@ -15,15 +16,15 @@ import java.util.List;
 public class NewNoteHandler extends AbstractHandler {
 	private final BotConfig config;
 
-	public NewNoteHandler(Message message, BotConfig config) {
-		super(message);
+	public NewNoteHandler(Message message, ChatManager chatManager, BotConfig config) {
+		super(message, chatManager);
 		this.config = config;
 	}
 
 	@Override
 	public List<PartialBotApiMethod<Message>> execute() {
 		String text = "Для создания новой заметки откройте ссылку <code>" +
-				config.getHost() + "/new?chat=" + message.getChatId() +
+				config.getHost() + "/new?chat=" + chatManager.getChat(message.getChatId()).getUuid() +
 				"</code> в браузере!";
 
 		return List.of(SendMessage.builder()

@@ -5,6 +5,9 @@ import com.example.notebookbot.persist.chat.repository.ChatRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+import java.util.UUID;
+
 @Component
 public class ChatManager {
 	private final ChatRepository repository;
@@ -18,6 +21,19 @@ public class ChatManager {
 		Chat chat = repository.getChatByChatId(chatId);
 		chat.setMode(mode);
 		repository.save(chat);
+	}
+
+	public boolean existByUuid(String uuid) {
+		return repository.existsByUuid(uuid);
+	}
+
+	public void updateUuid(Chat chat) {
+		chat.setUuid(UUID.randomUUID().toString());
+		repository.save(chat);
+	}
+
+	public Optional<Chat> getByUuid(String uuid) {
+		return Optional.ofNullable(repository.getByUuid(uuid));
 	}
 
 	public Chat getChat(Long chatId) {

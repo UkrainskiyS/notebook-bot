@@ -33,7 +33,7 @@ public class CallBackHandlerFactory extends AbstractHandlerFactory {
 
             case GET_FILE: return new GetFileCallBackHandler(message, chatManager, noteRepository, data);
             case DEL_NOTE: return new DeleteCallBackHandler(message, chatManager, noteRepository, data);
-            case EDIT_MODE: return new EditNoteCallBackHandler(message, chatManager, config, data);
+            case EDIT_MODE: return new EditNoteCallBackHandler(message, chatManager, noteRepository, config, data);
             default: return null;
         }
     }

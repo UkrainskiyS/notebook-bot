@@ -1,6 +1,5 @@
 package com.example.notebookbot.utilits;
 
-import com.example.notebookbot.persist.note.UpdateMod;
 import com.example.notebookbot.persist.note.model.Note;
 import one.util.streamex.StreamEx;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
@@ -13,13 +12,6 @@ import java.util.List;
  */
 
 public class TmeButtons {
-
-    public static List<List<InlineKeyboardButton>> getNoteUpdateModButtons(String id) {
-        return List.of(
-                List.of(InlineKeyboardButton.builder().text("Дописать в конец").callbackData(id + UpdateMod.ADD.name()).build()),
-                List.of(InlineKeyboardButton.builder().text("Перезаписать").callbackData(id + UpdateMod.OVERWRITE.name()).build())
-                );
-    }
 
     /*
     * Основной метод для создания кнопок с заметками. Сложность заключалась в том, чтобы сделать его универсальным.

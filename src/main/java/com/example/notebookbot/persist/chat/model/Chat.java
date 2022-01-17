@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Objects;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -16,7 +17,7 @@ import java.util.Objects;
 public class Chat {
 	@Id
 	@Column(name = "id", nullable = false)
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 
 	@Column(name = "chat_id")
@@ -25,9 +26,17 @@ public class Chat {
 	@Enumerated(value = EnumType.STRING)
 	private ChatMode mode;
 
+	private String uuid;
+
 	public Chat(Long chatId, ChatMode mode) {
 		this.chatId = chatId;
 		this.mode = mode;
+		this.uuid = UUID.randomUUID().toString();
+	}
+
+	public Chat update() {
+		this.uuid = UUID.randomUUID().toString();
+		return this;
 	}
 
 	@Override

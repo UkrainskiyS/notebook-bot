@@ -2,7 +2,7 @@ async function add() {
     const urlSearchParams = new URLSearchParams(window.location.search);
 
     let object = {
-        "chatId": parseInt(urlSearchParams.get('chat')),
+        "uuid": urlSearchParams.get('chat'),
         "name": document.getElementById("name_note").value,
         "text": simplemde.value()
     };
@@ -34,7 +34,7 @@ async function edit() {
     const urlSearchParams = new URLSearchParams(window.location.search);
 
     let object = {
-        "id": urlSearchParams.get("id"),
+        "uuid": urlSearchParams.get("note"),
         "text": simplemde.value()
     };
 
