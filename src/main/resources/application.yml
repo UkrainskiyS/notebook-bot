@@ -1,10 +1,6 @@
 bot:
   name: ${BOT_NAME}
   token: ${BOT_TOKEN}
-#  name: notebookmanager_bot
-#  token: 5048393640:AAGA0cYs7DKEm92a6v_QcTDUEFVkIX0p87Q
-
-#  host: http://localhost:8081
   host: ${HOST}
 
   commands:
