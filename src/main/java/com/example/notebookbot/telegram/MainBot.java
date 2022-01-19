@@ -36,7 +36,7 @@ public class MainBot extends TelegramLongPollingBot {
                     .ifPresent((list) -> list.forEach(this::send));
 
             // обрабатывает кнопки
-        } else if (update.hasCallbackQuery()) {
+        } else if (update.hasCallbackQuery()){
             Optional.ofNullable(service.callBackQueryHandler(update.getCallbackQuery()))
                     .ifPresent((list) -> list.forEach(this::send));
         }
@@ -49,8 +49,8 @@ public class MainBot extends TelegramLongPollingBot {
             } else if (messageBotApiMethod instanceof SendMessage) {
                 execute((SendMessage) messageBotApiMethod);
             }
-        } catch  (TelegramApiException ex) {
-                ex.printStackTrace();
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
         }
     }
 
